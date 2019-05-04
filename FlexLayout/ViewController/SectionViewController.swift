@@ -1,0 +1,159 @@
+//
+//  SectionViewController.swift
+//  FlexLayout
+//
+//  Created by anthann on 2019/5/3.
+//  Copyright © 2019 anthann. All rights reserved.
+//
+
+import UIKit
+import YogaKit
+
+class SectionViewController: UIViewController {
+    //MARK: Store
+    
+    var store: Store<Action, State, Command>!
+    
+    struct State: StateType {
+        var selectedView: UIView?
+        var candidateViews: [UIView]?
+    }
+    
+    enum Action: ActionType {
+        case onTapComponent(_ component: UIView)
+        case onTapOutside
+    }
+    
+    enum Command: CommandType {
+    }
+    
+    lazy var reducer: (State, Action) -> (state: State, command: Command?) = { [weak self] (state: State, action: Action) in
+        var state = state
+        var command: Command? = nil
+
+        guard let strongSelf = self else {
+            return (state, command)
+        }
+        
+        switch action {
+        case .onTapComponent(let view):
+            if let _ = state.selectedView {
+                state.selectedView = nil
+                state.candidateViews = nil
+            } else if let candidates = state.candidateViews, candidates.contains(view) {
+                state.candidateViews = nil
+                state.selectedView = view
+            } else if state.candidateViews == nil && state.selectedView == nil {
+                state.selectedView = nil
+                state.candidateViews = strongSelf.hitStack(of: view)
+            }
+        case .onTapOutside:
+            state.selectedView = nil
+            state.candidateViews = nil
+        }
+        return (state, command)
+    }
+    
+    func stateDidChanged(state: State, previousState: State?, command: Command?) {
+        if let _ = command {
+        }
+        if previousState == nil || previousState!.selectedView != state.selectedView {
+            if let previousView = previousState?.selectedView {
+                previousView.layer.shadowColor = nil
+                previousView.layer.shadowOpacity = 0.0
+            }
+            if let selectedView = state.selectedView {
+                selectedView.layer.shadowColor = UIColor.black.cgColor
+                selectedView.layer.shadowOpacity = 1.0
+            }
+        }
+        if previousState == nil || previousState!.candidateViews != state.candidateViews {
+            presentViewSelection()
+        }
+    }
+    
+    //MARK: Vars
+    
+    lazy var componentView = ComponentView()
+    
+    //MARK: Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+        setupViews()
+        store = Store<Action, State, Command>(reducer: reducer, initialState: State(selectedView: nil, candidateViews: nil))
+        store.subscribe { [weak self] state, previousState, command in
+            self?.stateDidChanged(state: state, previousState: previousState, command: command)
+        }
+    }
+    
+    private func setupViews() {
+        componentView.delegate = self
+        view.addSubview(componentView)
+        componentView.configureLayout { (layout) in
+            layout.isEnabled = true
+            layout.width = YGValue(value: 360.0, unit: .point)
+            layout.height = YGValue(value: 300.0, unit: .point)
+        }
+        
+        componentView.yoga.applyLayout(preservingOrigin: true)
+    }
+    
+    func addView() {
+        let view = ComponentView()
+        view.delegate = self
+        if let container = store.state.selectedView {
+            container.addSubview(view)
+        } else {
+            componentView.addSubview(view)
+        }
+        view.configureLayout { (layout) in
+            layout.isEnabled = true
+            layout.width = YGValue(value: 100.0, unit: .point)
+            layout.height = YGValue(value: 100.0, unit: .point)
+        }
+        componentView.yoga.applyLayout(preservingOrigin: true)
+    }
+    
+    private func hitStack(of view: UIView) -> [UIView] {
+        var result = [UIView]()
+        var current: UIView? = view
+        while let currentView = current {
+            result.append(currentView)
+            if currentView == componentView {
+                break
+            }
+            current = currentView.superview
+        }
+        return result
+    }
+    
+    private func presentViewSelection() {
+        guard let candidates = store.state.candidateViews, !candidates.isEmpty else {
+            return
+        }
+        let models: [ViewCandidateModel] = candidates.map { (view) -> ViewCandidateModel in
+            let color: UIColor = view.backgroundColor ?? .white
+            let model = ViewCandidateModel(colorString: color.hexString(), size: view.bounds.size)
+            return model
+        }
+        let vc = ViewSelectionViewController()
+        vc.candidates = models
+        vc.completeBlock = { [weak self] index in
+            self?.store.dispatch(.onTapComponent(candidates[index]))
+        }
+        vc.modalPresentationStyle = .popover
+        vc.popoverPresentationController?.backgroundColor = .white
+        vc.popoverPresentationController?.sourceView = candidates.first
+        vc.popoverPresentationController?.sourceRect = candidates.first!.bounds
+        self.present(vc, animated: true, completion: nil)
+    }
+}
+
+extension SectionViewController: ComponentHolderProtocol {
+    func onTapComponent(sender: UIView) {
+        store.dispatch(.onTapComponent(sender))
+    }
+}

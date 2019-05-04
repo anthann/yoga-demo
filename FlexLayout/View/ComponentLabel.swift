@@ -11,7 +11,6 @@ import UIKit
 class ComponentLabel: UILabel, ComponentProtocol {
     lazy var selectionGustureRecognizer: UITapGestureRecognizer = {
         let gr = UITapGestureRecognizer(target: self, action: #selector(didTap))
-        gr.isEnabled = false
         self.addGestureRecognizer(gr)
         return gr
     }()
@@ -32,6 +31,6 @@ class ComponentLabel: UILabel, ComponentProtocol {
     }
     
     @objc func didTap(sender: UITapGestureRecognizer) {
-        delegate?.onSelectComponent(sender: self)
+        delegate?.onTapComponent(sender: self)
     }
 }

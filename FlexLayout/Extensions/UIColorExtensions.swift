@@ -32,6 +32,18 @@ internal extension UIColor {
         let b = CGFloat(arc4random() % 256)
         return UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: alpha)
     }
+    
+    func hexString() -> String {
+        var red: CGFloat = 0.0
+        var green: CGFloat = 0.0
+        var blue: CGFloat = 0.0
+        var alpha: CGFloat = 0.0
+        if getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+            return String(format: "#%02X%02X%02X", Int(red * 255.0), Int(green * 255.0), Int(blue * 255.0))
+        } else {
+            return "#000000"
+        }
+    }
 }
 
 internal extension UIColor {

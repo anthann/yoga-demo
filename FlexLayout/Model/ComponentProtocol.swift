@@ -15,5 +15,5 @@ protocol ComponentProtocol: AnyObject {
 }
 
 protocol ComponentHolderProtocol: AnyObject {
-    func onSelectComponent(sender: ComponentProtocol)
+    func onTapComponent(sender: UIView)
 }

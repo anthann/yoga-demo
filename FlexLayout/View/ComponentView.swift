@@ -9,14 +9,7 @@
 import UIKit
 import YogaKit
 
-class ComponentView: UIView, ComponentProtocol {
-    lazy var selectionGustureRecognizer: UITapGestureRecognizer = {
-        let gr = UITapGestureRecognizer(target: self, action: #selector(didTap))
-        gr.isEnabled = false
-        self.addGestureRecognizer(gr)
-        return gr
-    }()
-    
+class ComponentView: UIView {
     weak var delegate: ComponentHolderProtocol?
 
     override init(frame: CGRect) {
@@ -27,6 +20,9 @@ class ComponentView: UIView, ComponentProtocol {
             layout.width = YGValue(value: 100, unit: .point)
             layout.height = YGValue(value: 100, unit: .point)
         }
+        
+        let gr = UITapGestureRecognizer(target: self, action: #selector(didTap))
+        self.addGestureRecognizer(gr)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,6 +30,6 @@ class ComponentView: UIView, ComponentProtocol {
     }
     
     @objc func didTap(sender: UITapGestureRecognizer) {
-        delegate?.onSelectComponent(sender: self)
+        delegate?.onTapComponent(sender: self)
     }
 }

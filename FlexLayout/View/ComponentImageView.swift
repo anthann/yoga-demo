@@ -12,7 +12,6 @@ import YogaKit
 class ComponentImageView: UIImageView, ComponentProtocol {
     lazy var selectionGustureRecognizer: UITapGestureRecognizer = {
         let gr = UITapGestureRecognizer(target: self, action: #selector(didTap))
-        gr.isEnabled = false
         self.addGestureRecognizer(gr)
         return gr
     }()
@@ -34,6 +33,6 @@ class ComponentImageView: UIImageView, ComponentProtocol {
     }
     
     @objc func didTap(sender: UITapGestureRecognizer) {
-        delegate?.onSelectComponent(sender: self)
+        delegate?.onTapComponent(sender: self)
     }
 }

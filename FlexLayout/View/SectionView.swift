@@ -10,11 +10,13 @@ import UIKit
 import YogaKit
 
 class SectionView: UIView, ComponentProtocol {
-    enum State {
-        case animated(_ componentStack: [UIView])
-        case normal
-        case selected(_ component: UIView)
-    }
+    
+    
+//    enum State {
+//        case animated(_ componentStack: [UIView])
+//        case normal
+//        case selected(_ component: UIView)
+//    }
 
     lazy var selectionGustureRecognizer: UITapGestureRecognizer = {
         let gr = UITapGestureRecognizer(target: self, action: #selector(onSelection))

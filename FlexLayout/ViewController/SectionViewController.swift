@@ -9,6 +9,10 @@
 import UIKit
 import YogaKit
 
+protocol SectionViewControllerProtocol: AnyObject {
+    func onSelectionChange(sender: SectionViewController, selected: UIView)
+}
+
 class SectionViewController: UIViewController {
     //MARK: Store
     
@@ -63,8 +67,12 @@ class SectionViewController: UIViewController {
                 previousView.layer.shadowOpacity = 0.0
             }
             if let selectedView = state.selectedView {
-                selectedView.layer.shadowColor = UIColor.black.cgColor
+                let color: UIColor = selectedView.backgroundColor ?? .black
+                selectedView.layer.shadowColor = color.cgColor
                 selectedView.layer.shadowOpacity = 1.0
+                delegate?.onSelectionChange(sender: self, selected: selectedView)
+            } else {
+                delegate?.onSelectionChange(sender: self, selected: componentView)
             }
         }
         if previousState == nil || previousState!.candidateViews != state.candidateViews {
@@ -74,6 +82,7 @@ class SectionViewController: UIViewController {
     
     //MARK: Vars
     
+    weak var delegate: SectionViewControllerProtocol?
     lazy var componentView = ComponentView()
     
     //MARK: Life Cycle
@@ -90,6 +99,7 @@ class SectionViewController: UIViewController {
     }
     
     private func setupViews() {
+        componentView.layoutModel = YGLayoutWapperModel()
         componentView.delegate = self
         view.addSubview(componentView)
         componentView.configureLayout { (layout) in
@@ -103,6 +113,7 @@ class SectionViewController: UIViewController {
     
     func addView() {
         let view = ComponentView()
+        view.layoutModel = YGLayoutWapperModel()
         view.delegate = self
         if let container = store.state.selectedView {
             container.addSubview(view)

@@ -11,20 +11,18 @@ import YogaKit
 import SnapKit
 
 class ViewController: UIViewController {
-//    private lazy var sectionView = SectionView()
     private lazy var layoutViewController = LayoutViewController()
     private lazy var sectionViewController = SectionViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        self.title = "Start"
-//        setupViews()
+        
+        self.title = "Yoga"
+        setupViews()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    private func setupViews() {
+        sectionViewController.delegate = self
         self.addChild(sectionViewController)
         sectionViewController.didMove(toParent: self)
         self.view.addSubview(sectionViewController.view)
@@ -42,31 +40,14 @@ class ViewController: UIViewController {
             make.top.bottom.right.equalToSuperview()
             make.width.equalTo(300)
         }
-//        sectionView.flexLayout()
         
         let gr = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        gr.delegate = self
         self.view.addGestureRecognizer(gr)
     }
-
-//    func setupViews() {
-//        sectionView.backgroundColor = UIColor(hexString: "#C0C3ED")
-//        view.addSubview(sectionView)
-//        sectionView.snp.makeConstraints { (make) in
-//            make.size.equalTo(CGSize(width: 375, height: 375))
-//            make.center.equalToSuperview()
-//        }
-//    }
     
     @objc func onTap(sender: UITapGestureRecognizer) {
         sectionViewController.store.dispatch(.onTapOutside)
-    }
-}
-
-extension ViewController: ComponentHolderProtocol {
-    func onTapComponent(sender: UIView) {
-//        if let view = sender as? UIView {
-//            sectionView.state = .selected(view)
-//        }
     }
 }
 
@@ -74,4 +55,21 @@ extension ViewController: LayoutViewControllerProtocol {
     func onTapAddSubView(sender: LayoutViewController) {
         sectionViewController.addView()
     }
+    
+    func setNeedsLayoutComponent(sender: LayoutViewController) {
+        sectionViewController.componentView.layout()
+    }
+}
+
+extension ViewController: SectionViewControllerProtocol {
+    func onSelectionChange(sender: SectionViewController, selected: UIView) {
+        layoutViewController.currentTarget = selected
+    }
+}
+
+extension ViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
 }

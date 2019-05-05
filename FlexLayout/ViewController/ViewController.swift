@@ -71,5 +71,13 @@ extension ViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
+    
 
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let location = touch.location(in: view)
+        if self.sectionViewController.view.frame.contains(location) || self.layoutViewController.view.frame.contains(location) {
+            return false
+        }
+        return true
+    }
 }

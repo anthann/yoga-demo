@@ -18,6 +18,11 @@ class LayoutViewController: UIViewController {
     enum Sections: Int {
         case addNode = 0
         case flexDirection
+        case justifyContent
+        case alignItems
+        case alignSelf
+        case alignContent
+        case flexWrap
         case max
     }
     
@@ -78,6 +83,26 @@ extension LayoutViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
             cell.title = currentTarget?.layoutModel?.flexDirection.title
             return cell
+        case .justifyContent:
+            let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
+            cell.title = currentTarget?.layoutModel?.justifyContent.title
+            return cell
+        case .alignItems:
+            let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
+            cell.title = currentTarget?.layoutModel?.alignItems.title
+            return cell
+        case .alignSelf:
+            let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
+            cell.title = currentTarget?.layoutModel?.alignSelf.title
+            return cell
+        case .alignContent:
+            let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
+            cell.title = currentTarget?.layoutModel?.alignContent.title
+            return cell
+        case .flexWrap:
+            let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
+            cell.title = currentTarget?.layoutModel?.flexWrap.title
+            return cell
         case .max:
             fatalError()
         }
@@ -94,6 +119,16 @@ extension LayoutViewController: UITableViewDelegate {
             return nil
         case .flexDirection:
             return "FLEX DIRECTION"
+        case .justifyContent:
+            return "JUSTIFY CONTENT"
+        case .alignItems:
+            return "ALIGH ITEMS"
+        case .alignSelf:
+            return "ALIGN SELF"
+        case .alignContent:
+            return "ALIGN CONTENT"
+        case .flexWrap:
+            return "FLEX WRAP"
         case .max:
             fatalError()
         }
@@ -107,6 +142,16 @@ extension LayoutViewController: UITableViewDelegate {
         case .addNode:
             return CGFloat.leastNormalMagnitude
         case .flexDirection:
+            fallthrough
+        case .justifyContent:
+            fallthrough
+        case .flexWrap:
+            fallthrough
+        case .alignSelf:
+            fallthrough
+        case .alignContent:
+            fallthrough
+        case .alignItems:
             return 30.0
         case .max:
             fatalError()
@@ -126,6 +171,16 @@ extension LayoutViewController: UITableViewDelegate {
             break
         case .flexDirection:
             didTapFlexDirection()
+        case .justifyContent:
+            didTapJustifyContent()
+        case .alignItems:
+            didTapAlighItems()
+        case .alignSelf:
+            didTapAlighSelf()
+        case .alignContent:
+            didTapAlignContent()
+        case .flexWrap:
+            didTapFlexWrap()
         case .max:
             fatalError()
         }
@@ -150,6 +205,112 @@ extension LayoutViewController {
             }))
         }
         ac.popoverPresentationController?.sourceView = cell
+        ac.popoverPresentationController?.permittedArrowDirections = .right
+        self.present(ac, animated: true, completion: nil)
+    }
+    
+    private func didTapJustifyContent() {
+        let indexPath = IndexPath(row: 0, section: Sections.justifyContent.rawValue)
+        let cell = tableView.cellForRow(at: indexPath)
+        let ac = UIAlertController(title: "Justify Content", message: nil, preferredStyle: .actionSheet)
+        let allValues = YGJustify.allValues
+        for value in allValues {
+            ac.addAction(UIAlertAction(title: value.title, style: .default, handler: { [weak self] (action) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.currentTarget?.layoutModel?.justifyContent = value
+                strongSelf.currentTarget?.applyLayoutModel()
+                strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                strongSelf.delegate?.setNeedsLayoutComponent(sender: strongSelf)
+            }))
+        }
+        ac.popoverPresentationController?.sourceView = cell
+        ac.popoverPresentationController?.permittedArrowDirections = .right
+        self.present(ac, animated: true, completion: nil)
+    }
+    
+    private func didTapAlighItems() {
+        let indexPath = IndexPath(row: 0, section: Sections.alignItems.rawValue)
+        let cell = tableView.cellForRow(at: indexPath)
+        let ac = UIAlertController(title: "Align Items", message: nil, preferredStyle: .actionSheet)
+        let allValues = YGAlign.allValues
+        for value in allValues {
+            ac.addAction(UIAlertAction(title: value.title, style: .default, handler: { [weak self] (action) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.currentTarget?.layoutModel?.alignItems = value
+                strongSelf.currentTarget?.applyLayoutModel()
+                strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                strongSelf.delegate?.setNeedsLayoutComponent(sender: strongSelf)
+            }))
+        }
+        ac.popoverPresentationController?.sourceView = cell
+        ac.popoverPresentationController?.permittedArrowDirections = .right
+        self.present(ac, animated: true, completion: nil)
+    }
+    
+    private func didTapAlignContent() {
+        let indexPath = IndexPath(row: 0, section: Sections.alignContent.rawValue)
+        let cell = tableView.cellForRow(at: indexPath)
+        let ac = UIAlertController(title: "Align Content", message: nil, preferredStyle: .actionSheet)
+        let allValues = YGAlign.allValues
+        for value in allValues {
+            ac.addAction(UIAlertAction(title: value.title, style: .default, handler: { [weak self] (action) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.currentTarget?.layoutModel?.alignContent = value
+                strongSelf.currentTarget?.applyLayoutModel()
+                strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                strongSelf.delegate?.setNeedsLayoutComponent(sender: strongSelf)
+            }))
+        }
+        ac.popoverPresentationController?.sourceView = cell
+        ac.popoverPresentationController?.permittedArrowDirections = .right
+        self.present(ac, animated: true, completion: nil)
+    }
+    
+    private func didTapAlighSelf() {
+        let indexPath = IndexPath(row: 0, section: Sections.alignSelf.rawValue)
+        let cell = tableView.cellForRow(at: indexPath)
+        let ac = UIAlertController(title: "Align Self", message: nil, preferredStyle: .actionSheet)
+        let allValues = YGAlign.allValues
+        for value in allValues {
+            ac.addAction(UIAlertAction(title: value.title, style: .default, handler: { [weak self] (action) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.currentTarget?.layoutModel?.alignSelf = value
+                strongSelf.currentTarget?.applyLayoutModel()
+                strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                strongSelf.delegate?.setNeedsLayoutComponent(sender: strongSelf)
+            }))
+        }
+        ac.popoverPresentationController?.sourceView = cell
+        ac.popoverPresentationController?.permittedArrowDirections = .right
+        self.present(ac, animated: true, completion: nil)
+    }
+    
+    private func didTapFlexWrap() {
+        let indexPath = IndexPath(row: 0, section: Sections.flexWrap.rawValue)
+        let cell = tableView.cellForRow(at: indexPath)
+        let ac = UIAlertController(title: "Flex Wrap", message: nil, preferredStyle: .actionSheet)
+        let allValues = YGWrap.allValues
+        for value in allValues {
+            ac.addAction(UIAlertAction(title: value.title, style: .default, handler: { [weak self] (action) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.currentTarget?.layoutModel?.flexWrap = value
+                strongSelf.currentTarget?.applyLayoutModel()
+                strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                strongSelf.delegate?.setNeedsLayoutComponent(sender: strongSelf)
+            }))
+        }
+        ac.popoverPresentationController?.sourceView = cell
+        ac.popoverPresentationController?.permittedArrowDirections = .right
         self.present(ac, animated: true, completion: nil)
     }
 }

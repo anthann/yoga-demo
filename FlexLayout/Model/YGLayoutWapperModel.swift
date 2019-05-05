@@ -13,19 +13,18 @@ import YogaKit
 /// 对于默认值不明确的属性，使用optional作为缺省值
 struct YGLayoutWapperModel {
     var direction: YGDirection?
-    /// YogaKit的默认值是.column。CSS的默认值可能是.row
-    var flexDirection: YGFlexDirection = .column
-    var justifyContent: YGJustify?
-    var alignContent: YGAlign?
-    var alignItems: YGAlign?
-    var alignSelf: YGAlign?
+    var flexDirection: YGFlexDirection = .row
+    var justifyContent: YGJustify = .flexStart
+    var alignContent: YGAlign = .flexStart
+    var alignItems: YGAlign = .stretch
+    var alignSelf: YGAlign = .auto
     var position: YGPositionType?
-    var flexWrap: YGWrap?
+    var flexWrap: YGWrap = .noWrap
     var overflow: YGOverflow?
     var display: YGDisplay?
-    var flexGrow: CGFloat?
-    var flexShrink: CGFloat?
-    var flexBasis: YGValue?
+    var flexGrow: CGFloat = 0.0
+    var flexShrink: CGFloat = 1.0
+    var flexBasis: YGValue? = YGValue(value: 0, unit: .auto)
     var left: YGValue?
     var top: YGValue?
     var right: YGValue?

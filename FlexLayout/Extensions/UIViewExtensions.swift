@@ -61,36 +61,22 @@ internal extension UIView {
                 layout.direction = direction
             }
             layout.flexDirection = wrapperModel.flexDirection
-            if let justifyContent = wrapperModel.justifyContent {
-                layout.justifyContent = justifyContent
-            }
-            if let alignContent = wrapperModel.alignContent {
-                layout.alignContent = alignContent
-            }
-            if let alignItems = wrapperModel.alignItems {
-                layout.alignItems = alignItems
-            }
-            if let alignSelf = wrapperModel.alignSelf {
-                layout.alignSelf = alignSelf
-            }
+            layout.justifyContent = wrapperModel.justifyContent
+            layout.alignContent = wrapperModel.alignContent
+            layout.alignItems = wrapperModel.alignItems
+            layout.alignSelf = wrapperModel.alignSelf
             if let position = wrapperModel.position {
                 layout.position = position
             }
-            if let flexWrap = wrapperModel.flexWrap {
-                layout.flexWrap = flexWrap
-            }
+            layout.flexWrap = wrapperModel.flexWrap
             if let overflow = wrapperModel.overflow {
                 layout.overflow = overflow
             }
             if let display = wrapperModel.display {
                 layout.display = display
             }
-            if let flexGrow = wrapperModel.flexGrow {
-                layout.flexGrow = flexGrow
-            }
-            if let flexShrink = wrapperModel.flexShrink {
-                layout.flexShrink = flexShrink
-            }
+            layout.flexGrow = wrapperModel.flexGrow
+            layout.flexShrink = wrapperModel.flexShrink
             if let flexBasis = wrapperModel.flexBasis {
                 layout.flexBasis = flexBasis
             }

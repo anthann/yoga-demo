@@ -99,31 +99,28 @@ class SectionViewController: UIViewController {
     }
     
     private func setupViews() {
-        componentView.layoutModel = YGLayoutWapperModel()
+        var layout = YGLayoutWapperModel()
+        layout.justifyContent = .flexStart
+        layout.width = YGValue(value: 360.0, unit: .point)
+        layout.height = YGValue(value: 300.0, unit: .point)
+        componentView.layoutModel = layout
         componentView.delegate = self
         view.addSubview(componentView)
-        componentView.configureLayout { (layout) in
-            layout.isEnabled = true
-            layout.width = YGValue(value: 360.0, unit: .point)
-            layout.height = YGValue(value: 300.0, unit: .point)
-        }
-        
+        componentView.applyLayoutModel()
         componentView.yoga.applyLayout(preservingOrigin: true)
     }
     
     func addView() {
+        var layout = YGLayoutWapperModel()
+        layout.width = YGValue(value: 100.0, unit: .point)
+        layout.height = YGValue(value: 100.0, unit: .point)
         let view = ComponentView()
-        view.layoutModel = YGLayoutWapperModel()
+        view.layoutModel = layout
         view.delegate = self
         if let container = store.state.selectedView {
             container.addSubview(view)
         } else {
             componentView.addSubview(view)
-        }
-        view.configureLayout { (layout) in
-            layout.isEnabled = true
-            layout.width = YGValue(value: 100.0, unit: .point)
-            layout.height = YGValue(value: 100.0, unit: .point)
         }
         componentView.yoga.applyLayout(preservingOrigin: true)
     }

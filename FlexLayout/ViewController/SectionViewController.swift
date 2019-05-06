@@ -126,7 +126,15 @@ class SectionViewController: UIViewController {
             componentView.addSubview(view)
         }
         view.applyLayoutModel()
-        componentView.yoga.applyLayout(preservingOrigin: true)
+        componentView.layout(mode: .adjustHeight)
+    }
+    
+    func removeView(_ view: UIView) {
+        if view == componentView {
+            return
+        }
+        view.removeFromSuperview()
+        componentView.layout(mode: .adjustHeight)
     }
     
     private func hitStack(of view: UIView) -> [UIView] {

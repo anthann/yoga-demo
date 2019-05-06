@@ -57,6 +57,10 @@ extension ViewController: LayoutViewControllerProtocol {
         sectionViewController.addView()
     }
     
+    func onTapRemoveView(sender: LayoutViewController, view: UIView) {
+        sectionViewController.removeView(view)
+    }
+    
     func setNeedsLayoutComponent(sender: LayoutViewController) {
         sectionViewController.componentView.layout()
     }
@@ -72,7 +76,6 @@ extension ViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         let location = touch.location(in: view)

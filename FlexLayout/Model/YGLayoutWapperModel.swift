@@ -29,129 +29,19 @@ struct YGLayoutWapperModel {
     var top: YGValueWrapper?
     var right: YGValueWrapper?
     var bottom: YGValueWrapper?
-    var start: YGValueWrapper?
-    var end: YGValueWrapper?
-    var marginLeft: YGValueWrapper?
-    var marginTop: YGValueWrapper?
-    var marginRight: YGValueWrapper?
-    var marginBottom: YGValueWrapper?
-    var marginStart: YGValueWrapper?
-    var marginEnd: YGValueWrapper?
-    var marginHorizontal: YGValueWrapper?
-    var marginVertical: YGValueWrapper?
-    var margin: YGValueWrapper?
-    var paddingLeft: YGValueWrapper?
-    var paddingTop: YGValueWrapper?
-    var paddingRight: YGValueWrapper?
-    var paddingBottom: YGValueWrapper?
-    var paddingStart: YGValueWrapper?
-    var paddingEnd: YGValueWrapper?
-    var paddingHorizontal: YGValueWrapper?
-    var paddingVertical: YGValueWrapper?
-    var padding: YGValueWrapper?
-    var width: YGValueWrapper?
-    var height: YGValueWrapper?
-    var minWidth: YGValueWrapper?
-    var minHeight: YGValueWrapper?
-    var maxWidth: YGValueWrapper?
-    var maxHeight: YGValueWrapper?
+    var marginLeft: YGValueWrapper = .point(0)
+    var marginTop: YGValueWrapper = .point(0)
+    var marginRight: YGValueWrapper = .point(0)
+    var marginBottom: YGValueWrapper = .point(0)
+    var paddingLeft: YGValueWrapper = .point(0)
+    var paddingTop: YGValueWrapper = .point(0)
+    var paddingRight: YGValueWrapper = .point(0)
+    var paddingBottom: YGValueWrapper = .point(0)
+    var width: YGValueWrapper = .auto
+    var height: YGValueWrapper = .auto
+    var minWidth: YGValueWrapper = .undefined
+    var minHeight: YGValueWrapper = .undefined
+    var maxWidth: YGValueWrapper = .undefined
+    var maxHeight: YGValueWrapper = .undefined
     var aspectRatio: CGFloat?
-}
-
-extension YGLayoutWapperModel {
-    var actualPaddingLeft: YGValueWrapper? {
-        if let p = paddingLeft {
-            return p
-        } else if let p = paddingHorizontal {
-            return p
-        } else if let p = padding {
-            return p
-        } else {
-            return nil
-        }
-    }
-    
-    var actualPaddingRight: YGValueWrapper? {
-        if let p = paddingRight {
-            return p
-        } else if let p = paddingHorizontal {
-            return p
-        } else if let p = padding {
-            return p
-        } else {
-            return nil
-        }
-    }
-    
-    var actualPaddingTop: YGValueWrapper? {
-        if let p = paddingTop {
-            return p
-        } else if let p = paddingVertical {
-            return p
-        } else if let p = padding {
-            return p
-        } else {
-            return nil
-        }
-    }
-    
-    var actualPaddingBottom: YGValueWrapper? {
-        if let p = paddingBottom {
-            return p
-        } else if let p = paddingVertical {
-            return p
-        } else if let p = padding {
-            return p
-        } else {
-            return nil
-        }
-    }
-    
-    var actualMarginLeft: YGValueWrapper? {
-        if let p = marginLeft {
-            return p
-        } else if let p = marginHorizontal {
-            return p
-        } else if let p = margin {
-            return p
-        } else {
-            return nil
-        }
-    }
-    
-    var actualMarginRight: YGValueWrapper? {
-        if let p = marginRight {
-            return p
-        } else if let p = marginHorizontal {
-            return p
-        } else if let p = margin {
-            return p
-        } else {
-            return nil
-        }
-    }
-    
-    var actualMarginTop: YGValueWrapper? {
-        if let p = marginTop {
-            return p
-        } else if let p = marginVertical {
-            return p
-        } else if let p = margin {
-            return p
-        } else {
-            return nil
-        }
-    }
-    
-    var actualMarginBottom: YGValueWrapper? {
-        if let p = marginBottom {
-            return p
-        } else if let p = marginVertical {
-            return p
-        } else if let p = margin {
-            return p
-        } else {
-            return nil
-        }
-    }
 }

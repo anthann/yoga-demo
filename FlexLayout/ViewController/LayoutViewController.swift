@@ -12,6 +12,7 @@ import IHKeyboardAvoiding
 
 protocol LayoutViewControllerProtocol: AnyObject {
     func onTapAddSubView(sender: LayoutViewController)
+    func onTapRemoveView(sender: LayoutViewController, view: UIView)
     func setNeedsLayoutComponent(sender: LayoutViewController)
 }
 
@@ -139,16 +140,16 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             cell.bottomTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
-            if let left = currentTarget?.layoutModel?.actualPaddingLeft, case YGValueWrapper.point(let value) = left {
+            if let left = currentTarget?.layoutModel?.left, case YGValueWrapper.point(let value) = left {
                 cell.leftTextField.text = String(format: "%.1f", value)
             }
-            if let right = currentTarget?.layoutModel?.actualPaddingRight, case YGValueWrapper.point(let value) = right {
+            if let right = currentTarget?.layoutModel?.right, case YGValueWrapper.point(let value) = right {
                 cell.rightTextField.text = String(format: "%.1f", value)
             }
-            if let top = currentTarget?.layoutModel?.actualPaddingTop, case YGValueWrapper.point(let value) = top {
+            if let top = currentTarget?.layoutModel?.top, case YGValueWrapper.point(let value) = top {
                 cell.topTextField.text = String(format: "%.1f", value)
             }
-            if let bottom = currentTarget?.layoutModel?.actualPaddingBottom, case YGValueWrapper.point(let value) = bottom {
+            if let bottom = currentTarget?.layoutModel?.bottom, case YGValueWrapper.point(let value) = bottom {
                 cell.bottomTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -167,16 +168,16 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
             cell.bottomTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
-            if let left = currentTarget?.layoutModel?.actualMarginLeft, case YGValueWrapper.point(let value) = left {
+            if let left = currentTarget?.layoutModel?.marginLeft, case YGValueWrapper.point(let value) = left {
                 cell.leftTextField.text = String(format: "%.1f", value)
             }
-            if let right = currentTarget?.layoutModel?.actualMarginRight, case YGValueWrapper.point(let value) = right {
+            if let right = currentTarget?.layoutModel?.marginRight, case YGValueWrapper.point(let value) = right {
                 cell.rightTextField.text = String(format: "%.1f", value)
             }
-            if let top = currentTarget?.layoutModel?.actualMarginTop, case YGValueWrapper.point(let value) = top {
+            if let top = currentTarget?.layoutModel?.marginTop, case YGValueWrapper.point(let value) = top {
                 cell.topTextField.text = String(format: "%.1f", value)
             }
-            if let bottom = currentTarget?.layoutModel?.actualMarginBottom, case YGValueWrapper.point(let value) = bottom {
+            if let bottom = currentTarget?.layoutModel?.marginBottom, case YGValueWrapper.point(let value) = bottom {
                 cell.bottomTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -210,8 +211,8 @@ extension LayoutViewController: UITableViewDataSource {
             return cell
         case .size:
             let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
-            cell.widthTextField.placeholder = "0"
-            cell.heightTextField.placeholder = "0"
+            cell.widthTextField.placeholder = "auto"
+            cell.heightTextField.placeholder = "auto"
             cell.widthTextField.delegate = self
             cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didSizeChanged(sender:)), for: .editingChanged)
@@ -225,8 +226,8 @@ extension LayoutViewController: UITableViewDataSource {
             return cell
         case .maxSize:
             let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
-            cell.widthTextField.placeholder = "0"
-            cell.heightTextField.placeholder = "0"
+            cell.widthTextField.placeholder = "undefined"
+            cell.heightTextField.placeholder = "undefined"
             cell.widthTextField.delegate = self
             cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didMaxSizeChanged(sender:)), for: .editingChanged)
@@ -240,8 +241,8 @@ extension LayoutViewController: UITableViewDataSource {
             return cell
         case .minSize:
             let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
-            cell.widthTextField.placeholder = "0"
-            cell.heightTextField.placeholder = "0"
+            cell.widthTextField.placeholder = "undefined"
+            cell.heightTextField.placeholder = "undefined"
             cell.widthTextField.delegate = self
             cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didMinSizeChanged(sender:)), for: .editingChanged)
@@ -610,13 +611,13 @@ extension LayoutViewController {
         } else {
             switch direction {
             case .left:
-                currentTarget?.layoutModel?.paddingLeft = nil
+                currentTarget?.layoutModel?.paddingLeft = .point(0)
             case .right:
-                currentTarget?.layoutModel?.paddingRight = nil
+                currentTarget?.layoutModel?.paddingRight = .point(0)
             case .top:
-                currentTarget?.layoutModel?.paddingTop = nil
+                currentTarget?.layoutModel?.paddingTop = .point(0)
             case .bottom:
-                currentTarget?.layoutModel?.paddingBottom = nil
+                currentTarget?.layoutModel?.paddingBottom = .point(0)
             }
         }
         currentTarget?.applyLayoutModel()
@@ -642,13 +643,13 @@ extension LayoutViewController {
         } else {
             switch direction {
             case .left:
-                currentTarget?.layoutModel?.marginLeft = nil
+                currentTarget?.layoutModel?.marginLeft = .point(0)
             case .right:
-                currentTarget?.layoutModel?.marginRight = nil
+                currentTarget?.layoutModel?.marginRight = .point(0)
             case .top:
-                currentTarget?.layoutModel?.marginTop = nil
+                currentTarget?.layoutModel?.marginTop = .point(0)
             case .bottom:
-                currentTarget?.layoutModel?.marginBottom = nil
+                currentTarget?.layoutModel?.marginBottom = .point(0)
             }
         }
         currentTarget?.applyLayoutModel()
@@ -702,9 +703,9 @@ extension LayoutViewController {
         } else {
             switch dimension {
             case .width:
-                currentTarget?.layoutModel?.width = nil
+                currentTarget?.layoutModel?.width = .auto
             case .height:
-                currentTarget?.layoutModel?.height = nil
+                currentTarget?.layoutModel?.height = .auto
             }
         }
         currentTarget?.applyLayoutModel()
@@ -726,9 +727,9 @@ extension LayoutViewController {
         } else {
             switch dimension {
             case .width:
-                currentTarget?.layoutModel?.maxWidth = nil
+                currentTarget?.layoutModel?.maxWidth = .undefined
             case .height:
-                currentTarget?.layoutModel?.maxHeight = nil
+                currentTarget?.layoutModel?.maxHeight = .undefined
             }
         }
         currentTarget?.applyLayoutModel()
@@ -750,9 +751,9 @@ extension LayoutViewController {
         } else {
             switch dimension {
             case .width:
-                currentTarget?.layoutModel?.minWidth = nil
+                currentTarget?.layoutModel?.minWidth = .undefined
             case .height:
-                currentTarget?.layoutModel?.minHeight = nil
+                currentTarget?.layoutModel?.minHeight = .undefined
             }
         }
         currentTarget?.applyLayoutModel()
@@ -794,7 +795,10 @@ extension LayoutViewController: AddNodeCellProtocol {
     }
     
     func onRemoveNode(sender: AddNodeTableViewCell, target: UIButton) {
-        
+        guard let view = currentTarget else {
+            return
+        }
+        delegate?.onTapRemoveView(sender: self, view: view)
     }
 }
 

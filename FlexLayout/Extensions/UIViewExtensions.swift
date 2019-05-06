@@ -86,84 +86,20 @@ internal extension UIView {
             if let bottom = wrapperModel.bottom {
                 layout.bottom = bottom.toYGValue()
             }
-            if let start = wrapperModel.start {
-                layout.start = start.toYGValue()
-            }
-            if let end = wrapperModel.end {
-                layout.end = end.toYGValue()
-            }
-            if let marginLeft = wrapperModel.marginLeft {
-                layout.marginLeft = marginLeft.toYGValue()
-            }
-            if let marginTop = wrapperModel.marginTop {
-                layout.marginTop = marginTop.toYGValue()
-            }
-            if let marginRight = wrapperModel.marginRight {
-                layout.marginRight = marginRight.toYGValue()
-            }
-            if let marginBottom = wrapperModel.marginBottom {
-                layout.marginBottom = marginBottom.toYGValue()
-            }
-            if let marginStart = wrapperModel.marginStart {
-                layout.marginStart = marginStart.toYGValue()
-            }
-            if let marginEnd = wrapperModel.marginEnd {
-                layout.marginEnd = marginEnd.toYGValue()
-            }
-            if let marginHorizontal = wrapperModel.marginHorizontal {
-                layout.marginHorizontal = marginHorizontal.toYGValue()
-            }
-            if let marginVertical = wrapperModel.marginVertical {
-                layout.marginVertical = marginVertical.toYGValue()
-            }
-            if let margin = wrapperModel.margin {
-                layout.margin = margin.toYGValue()
-            }
-            if let paddingLeft = wrapperModel.paddingLeft {
-                layout.paddingLeft = paddingLeft.toYGValue()
-            }
-            if let paddingTop = wrapperModel.paddingTop {
-                layout.paddingTop = paddingTop.toYGValue()
-            }
-            if let paddingRight = wrapperModel.paddingRight {
-                layout.paddingRight = paddingRight.toYGValue()
-            }
-            if let paddingBottom = wrapperModel.paddingBottom {
-                layout.paddingBottom = paddingBottom.toYGValue()
-            }
-            if let paddingStart = wrapperModel.paddingStart {
-                layout.paddingStart = paddingStart.toYGValue()
-            }
-            if let paddingEnd = wrapperModel.paddingEnd {
-                layout.paddingEnd = paddingEnd.toYGValue()
-            }
-            if let paddingHorizontal = wrapperModel.paddingHorizontal {
-                layout.paddingHorizontal = paddingHorizontal.toYGValue()
-            }
-            if let paddingVertical = wrapperModel.paddingVertical {
-                layout.paddingVertical = paddingVertical.toYGValue()
-            }
-            if let padding = wrapperModel.padding {
-                layout.padding = padding.toYGValue()
-            }
-            if let width = wrapperModel.width {
-                layout.width = width.toYGValue()
-            }
-            if let height = wrapperModel.height {
-                layout.height = height.toYGValue()
-            }
-            if let minWidth = wrapperModel.minWidth {
-                layout.minWidth = minWidth.toYGValue()
-            }
-            if let minHeight = wrapperModel.minHeight {
-                layout.minHeight = minHeight.toYGValue()
-            }
-            if let maxWidth = wrapperModel.maxWidth {
-                layout.maxWidth = maxWidth.toYGValue()
-            }
-            if let maxHeight = wrapperModel.maxHeight {
-                layout.maxHeight = maxHeight.toYGValue()
-            }
+            layout.marginLeft = wrapperModel.marginLeft.toYGValue()
+            layout.marginTop = wrapperModel.marginTop.toYGValue()
+            layout.marginRight = wrapperModel.marginRight.toYGValue()
+            layout.marginBottom = wrapperModel.marginBottom.toYGValue()
+            layout.paddingLeft = wrapperModel.paddingLeft.toYGValue()
+            layout.paddingTop = wrapperModel.paddingTop.toYGValue()
+            layout.paddingRight = wrapperModel.paddingRight.toYGValue()
+            layout.paddingBottom = wrapperModel.paddingBottom.toYGValue()
+            layout.width = wrapperModel.width.toYGValue()
+            layout.height = wrapperModel.height.toYGValue()
+            layout.minWidth = wrapperModel.minWidth.toYGValue()
+            layout.minHeight = wrapperModel.minHeight.toYGValue()
+            layout.maxWidth = wrapperModel.maxWidth.toYGValue()
+            layout.maxHeight = wrapperModel.maxHeight.toYGValue()
             if let aspectRatio = wrapperModel.aspectRatio {
                 layout.aspectRatio = aspectRatio
             }

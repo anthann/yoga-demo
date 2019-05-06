@@ -24,6 +24,9 @@ class LayoutViewController: UIViewController {
         case alignSelf
         case alignContent
         case flexWrap
+        case size
+        case maxSize
+        case minSize
         case padding
         case margin
         case position
@@ -39,6 +42,7 @@ class LayoutViewController: UIViewController {
         tableView.register(AddNodeTableViewCell.self, forCellReuseIdentifier: AddNodeTableViewCell.ReuseIdentifier)
         tableView.register(DropDownTableViewCell.self, forCellReuseIdentifier: DropDownTableViewCell.ReuseIdentifier)
         tableView.register(PaddingTableViewCell.self, forCellReuseIdentifier: PaddingTableViewCell.ReuseIdentifier)
+        tableView.register(SizeTableViewCell.self, forCellReuseIdentifier: SizeTableViewCell.ReuseIdentifier)
         return tableView
     }()
     
@@ -180,6 +184,45 @@ extension LayoutViewController: UITableViewDataSource {
                 cell.bottomTextField.text = String(format: "%.1f", value)
             }
             return cell
+        case .size:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
+            cell.widthTextField.placeholder = "0"
+            cell.heightTextField.placeholder = "0"
+            cell.widthTextField.addTarget(self, action: #selector(didSizeChanged(sender:)), for: .editingChanged)
+            cell.heightTextField.addTarget(self, action: #selector(didSizeChanged(sender:)), for: .editingChanged)
+            if let width = currentTarget?.layoutModel?.width, let value = width.pointValue {
+                cell.widthTextField.text = String(format: "%.1f", value)
+            }
+            if let height = currentTarget?.layoutModel?.height, let value = height.pointValue {
+                cell.heightTextField.text = String(format: "%.1f", value)
+            }
+            return cell
+        case .maxSize:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
+            cell.widthTextField.placeholder = "0"
+            cell.heightTextField.placeholder = "0"
+            cell.widthTextField.addTarget(self, action: #selector(didMaxSizeChanged(sender:)), for: .editingChanged)
+            cell.heightTextField.addTarget(self, action: #selector(didMaxSizeChanged(sender:)), for: .editingChanged)
+            if let width = currentTarget?.layoutModel?.maxWidth, let value = width.pointValue {
+                cell.widthTextField.text = String(format: "%.1f", value)
+            }
+            if let height = currentTarget?.layoutModel?.maxHeight, let value = height.pointValue {
+                cell.heightTextField.text = String(format: "%.1f", value)
+            }
+            return cell
+        case .minSize:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
+            cell.widthTextField.placeholder = "0"
+            cell.heightTextField.placeholder = "0"
+            cell.widthTextField.addTarget(self, action: #selector(didMinSizeChanged(sender:)), for: .editingChanged)
+            cell.heightTextField.addTarget(self, action: #selector(didMinSizeChanged(sender:)), for: .editingChanged)
+            if let width = currentTarget?.layoutModel?.minWidth, let value = width.pointValue {
+                cell.widthTextField.text = String(format: "%.1f", value)
+            }
+            if let height = currentTarget?.layoutModel?.minHeight, let value = height.pointValue {
+                cell.heightTextField.text = String(format: "%.1f", value)
+            }
+            return cell
         case .max:
             fatalError()
         }
@@ -212,6 +255,12 @@ extension LayoutViewController: UITableViewDelegate {
             return nil
         case .position:
             return nil
+        case .size:
+            return "WIDTH X HEIGHT"
+        case .maxSize:
+            return "MAX_WIDTH X MAX_HEIGHT"
+        case .minSize:
+            return "MIN_WIDTH X MIN_HEIGHT"
         case .max:
             fatalError()
         }
@@ -230,6 +279,12 @@ extension LayoutViewController: UITableViewDelegate {
             return CGFloat.leastNormalMagnitude
         case .addNode:
             return CGFloat.leastNormalMagnitude
+        case .size:
+            fallthrough
+        case .maxSize:
+            fallthrough
+        case .minSize:
+            fallthrough
         case .flexDirection:
             fallthrough
         case .justifyContent:
@@ -287,6 +342,12 @@ extension LayoutViewController: UITableViewDelegate {
         case .margin:
             break
         case .position:
+            break
+        case .size:
+            break
+        case .minSize:
+            break
+        case .maxSize:
             break
         case .max:
             fatalError()
@@ -482,6 +543,60 @@ extension LayoutViewController {
             currentTarget?.layoutModel?.top = YGValue(value: value, unit: .point)
         case .bottom:
             currentTarget?.layoutModel?.bottom = YGValue(value: value, unit: .point)
+        }
+        currentTarget?.applyLayoutModel()
+        delegate?.setNeedsLayoutComponent(sender: self)
+    }
+    
+    @objc func didSizeChanged(sender: UITextField) {
+        guard let dimension = SizeDimension(rawValue: sender.tag) else {
+            fatalError()
+        }
+        guard let text = sender.text else {
+            return
+        }
+        let value: Float = NSString(string: text).floatValue
+        switch dimension {
+        case .width:
+            currentTarget?.layoutModel?.width = YGValue(value: value, unit: .point)
+        case .height:
+            currentTarget?.layoutModel?.height = YGValue(value: value, unit: .point)
+        }
+        currentTarget?.applyLayoutModel()
+        delegate?.setNeedsLayoutComponent(sender: self)
+    }
+    
+    @objc func didMaxSizeChanged(sender: UITextField) {
+        guard let dimension = SizeDimension(rawValue: sender.tag) else {
+            fatalError()
+        }
+        guard let text = sender.text else {
+            return
+        }
+        let value: Float = NSString(string: text).floatValue
+        switch dimension {
+        case .width:
+            currentTarget?.layoutModel?.maxWidth = YGValue(value: value, unit: .point)
+        case .height:
+            currentTarget?.layoutModel?.maxHeight = YGValue(value: value, unit: .point)
+        }
+        currentTarget?.applyLayoutModel()
+        delegate?.setNeedsLayoutComponent(sender: self)
+    }
+    
+    @objc func didMinSizeChanged(sender: UITextField) {
+        guard let dimension = SizeDimension(rawValue: sender.tag) else {
+            fatalError()
+        }
+        guard let text = sender.text else {
+            return
+        }
+        let value: Float = NSString(string: text).floatValue
+        switch dimension {
+        case .width:
+            currentTarget?.layoutModel?.minWidth = YGValue(value: value, unit: .point)
+        case .height:
+            currentTarget?.layoutModel?.minHeight = YGValue(value: value, unit: .point)
         }
         currentTarget?.applyLayoutModel()
         delegate?.setNeedsLayoutComponent(sender: self)

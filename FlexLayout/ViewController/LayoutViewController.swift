@@ -14,6 +14,13 @@ protocol LayoutViewControllerProtocol: AnyObject {
     func setNeedsLayoutComponent(sender: LayoutViewController)
 }
 
+fileprivate enum Direction {
+    case left
+    case right
+    case top
+    case bottom
+}
+
 class LayoutViewController: UIViewController {
     enum Sections: Int {
         case addNode = 0
@@ -23,6 +30,7 @@ class LayoutViewController: UIViewController {
         case alignSelf
         case alignContent
         case flexWrap
+        case padding
         case max
     }
     
@@ -34,6 +42,7 @@ class LayoutViewController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.register(AddNodeTableViewCell.self, forCellReuseIdentifier: AddNodeTableViewCell.ReuseIdentifier)
         tableView.register(DropDownTableViewCell.self, forCellReuseIdentifier: DropDownTableViewCell.ReuseIdentifier)
+        tableView.register(PaddingTableViewCell.self, forCellReuseIdentifier: PaddingTableViewCell.ReuseIdentifier)
         return tableView
     }()
     
@@ -103,6 +112,26 @@ extension LayoutViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
             cell.title = currentTarget?.layoutModel?.flexWrap.title
             return cell
+        case .padding:
+            let cell = tableView.dequeueReusableCell(withIdentifier: PaddingTableViewCell.ReuseIdentifier) as! PaddingTableViewCell
+            cell.label.text = "PADDING"
+            cell.leftTextField.placeholder = "0"
+            cell.rightTextField.placeholder = "0"
+            cell.topTextField.placeholder = "0"
+            cell.bottomTextField.placeholder = "0"
+            if let left = currentTarget?.layoutModel?.actualPaddingLeft, let value = left.pointValue {
+                cell.leftTextField.text = String(format: "%.1f", value)
+            }
+            if let right = currentTarget?.layoutModel?.actualPaddingRight, let value = right.pointValue {
+                cell.rightTextField.text = String(format: "%.1f", value)
+            }
+            if let top = currentTarget?.layoutModel?.actualPaddingTop, let value = top.pointValue {
+                cell.topTextField.text = String(format: "%.1f", value)
+            }
+            if let bottom = currentTarget?.layoutModel?.actualPaddingBottom, let value = bottom.pointValue {
+                cell.bottomTextField.text = String(format: "%.1f", value)
+            }
+            return cell
         case .max:
             fatalError()
         }
@@ -129,6 +158,8 @@ extension LayoutViewController: UITableViewDelegate {
             return "ALIGN CONTENT"
         case .flexWrap:
             return "FLEX WRAP"
+        case .padding:
+            return nil
         case .max:
             fatalError()
         }
@@ -139,6 +170,8 @@ extension LayoutViewController: UITableViewDelegate {
             fatalError()
         }
         switch section {
+        case .padding:
+            return CGFloat.leastNormalMagnitude
         case .addNode:
             return CGFloat.leastNormalMagnitude
         case .flexDirection:
@@ -159,7 +192,15 @@ extension LayoutViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44.0
+        guard let section = Sections(rawValue: indexPath.section) else {
+            fatalError()
+        }
+        switch section {
+        case .padding:
+            return 110
+        default:
+            return 44.0
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -181,6 +222,8 @@ extension LayoutViewController: UITableViewDelegate {
             didTapAlignContent()
         case .flexWrap:
             didTapFlexWrap()
+        case .padding:
+            break
         case .max:
             fatalError()
         }
@@ -312,6 +355,10 @@ extension LayoutViewController {
         ac.popoverPresentationController?.sourceView = cell
         ac.popoverPresentationController?.permittedArrowDirections = .right
         self.present(ac, animated: true, completion: nil)
+    }
+    
+    private func didPaddingChanged(sender: UITextField, direction: Direction) {
+        
     }
 }
 

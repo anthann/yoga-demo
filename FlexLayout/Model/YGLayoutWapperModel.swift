@@ -57,3 +57,101 @@ struct YGLayoutWapperModel {
     var maxHeight: YGValue?
     var aspectRatio: CGFloat?
 }
+
+extension YGLayoutWapperModel {
+    var actualPaddingLeft: YGValue? {
+        if let p = paddingLeft {
+            return p
+        } else if let p = paddingHorizontal {
+            return p
+        } else if let p = padding {
+            return p
+        } else {
+            return nil
+        }
+    }
+    
+    var actualPaddingRight: YGValue? {
+        if let p = paddingRight {
+            return p
+        } else if let p = paddingHorizontal {
+            return p
+        } else if let p = padding {
+            return p
+        } else {
+            return nil
+        }
+    }
+    
+    var actualPaddingTop: YGValue? {
+        if let p = paddingTop {
+            return p
+        } else if let p = paddingVertical {
+            return p
+        } else if let p = padding {
+            return p
+        } else {
+            return nil
+        }
+    }
+    
+    var actualPaddingBottom: YGValue? {
+        if let p = paddingBottom {
+            return p
+        } else if let p = paddingVertical {
+            return p
+        } else if let p = padding {
+            return p
+        } else {
+            return nil
+        }
+    }
+    
+    var actualMarginLeft: YGValue? {
+        if let p = marginLeft {
+            return p
+        } else if let p = marginHorizontal {
+            return p
+        } else if let p = margin {
+            return p
+        } else {
+            return nil
+        }
+    }
+    
+    var actualMarginRight: YGValue? {
+        if let p = marginRight {
+            return p
+        } else if let p = marginHorizontal {
+            return p
+        } else if let p = margin {
+            return p
+        } else {
+            return nil
+        }
+    }
+    
+    var actualMarginTop: YGValue? {
+        if let p = marginTop {
+            return p
+        } else if let p = marginVertical {
+            return p
+        } else if let p = margin {
+            return p
+        } else {
+            return nil
+        }
+    }
+    
+    var actualMarginBottom: YGValue? {
+        if let p = marginBottom {
+            return p
+        } else if let p = marginVertical {
+            return p
+        } else if let p = margin {
+            return p
+        } else {
+            return nil
+        }
+    }
+}

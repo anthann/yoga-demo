@@ -102,3 +102,13 @@ extension YGWrap {
         return [.noWrap, .wrap, .wrapReverse]
     }
 }
+
+extension YGValue {
+    /// 只要Unit不是percent，都暂且认为是point
+    var pointValue: Float? {
+        if unit != .percent {
+            return value
+        }
+        return nil
+    }
+}

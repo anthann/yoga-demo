@@ -19,6 +19,7 @@
 		377690DF227E926200C11B27 /* DropDownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377690DE227E926200C11B27 /* DropDownTableViewCell.swift */; };
 		377690E1227E941300C11B27 /* LayoutSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377690E0227E941300C11B27 /* LayoutSectionHeaderView.swift */; };
 		377690E3227E968F00C11B27 /* YogaLayoutExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377690E2227E968F00C11B27 /* YogaLayoutExtensions.swift */; };
+		377690E7227FDF1A00C11B27 /* PaddingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377690E6227FDF1A00C11B27 /* PaddingTableViewCell.swift */; };
 		37900197226DBFA6008E5C5B /* ComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37900196226DBFA6008E5C5B /* ComponentView.swift */; };
 		379001A0226DBFDB008E5C5B /* ComponentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790019F226DBFDB008E5C5B /* ComponentProtocol.swift */; };
 		379001A3226DC66A008E5C5B /* LayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379001A2226DC66A008E5C5B /* LayoutViewController.swift */; };
@@ -72,6 +73,7 @@
 		377690DE227E926200C11B27 /* DropDownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCell.swift; sourceTree = "<group>"; };
 		377690E0227E941300C11B27 /* LayoutSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSectionHeaderView.swift; sourceTree = "<group>"; };
 		377690E2227E968F00C11B27 /* YogaLayoutExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YogaLayoutExtensions.swift; sourceTree = "<group>"; };
+		377690E6227FDF1A00C11B27 /* PaddingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingTableViewCell.swift; sourceTree = "<group>"; };
 		37900196226DBFA6008E5C5B /* ComponentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentView.swift; sourceTree = "<group>"; };
 		3790019F226DBFDB008E5C5B /* ComponentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentProtocol.swift; sourceTree = "<group>"; };
 		379001A2226DC66A008E5C5B /* LayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				F97CEF38227D878800FF0971 /* CandidateCollectionViewCell.swift */,
 				377690DE227E926200C11B27 /* DropDownTableViewCell.swift */,
 				377690E0227E941300C11B27 /* LayoutSectionHeaderView.swift */,
+				377690E6227FDF1A00C11B27 /* PaddingTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 				379001A0226DBFDB008E5C5B /* ComponentProtocol.swift in Sources */,
 				F97CEF39227D878800FF0971 /* CandidateCollectionViewCell.swift in Sources */,
 				377690E1227E941300C11B27 /* LayoutSectionHeaderView.swift in Sources */,
+				377690E7227FDF1A00C11B27 /* PaddingTableViewCell.swift in Sources */,
 				F97CEF35227D85DF00FF0971 /* ViewSelectionViewController.swift in Sources */,
 				3743F308226B2687002C3E71 /* UIColorExtensions.swift in Sources */,
 				377690DB227E86A400C11B27 /* UIViewExtensions.swift in Sources */,

@@ -103,6 +103,23 @@ extension YGWrap {
     }
 }
 
+extension YGPositionType {
+    var title: String {
+        switch self {
+        case .absolute:
+            return "ABSOLUTE"
+        case .relative:
+            return "RELATIVE"
+        @unknown default:
+            return "UNKNOWN"
+        }
+    }
+    
+    static var allValues: [YGPositionType] {
+        return [.absolute, .relative]
+    }
+}
+
 extension YGValue {
     /// 只要Unit不是percent，都暂且认为是point
     var pointValue: Float? {

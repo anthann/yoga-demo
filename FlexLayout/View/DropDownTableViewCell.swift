@@ -13,7 +13,11 @@ class DropDownTableViewCell: UITableViewCell {
     
     var title: String? {
         didSet {
-            label.text = title
+            if let title = title {
+                label.text = title
+            } else {
+                label.text = "Undefined"
+            }
         }
     }
     private let label = UILabel()
@@ -21,6 +25,7 @@ class DropDownTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        label.text = "Undefined"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = UIColor.indigoBG100()
         contentView.addSubview(label)
@@ -55,7 +60,7 @@ class DropDownTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         title = nil
-        label.text = ""
+        label.text = "Undefined"
     }
 
 }

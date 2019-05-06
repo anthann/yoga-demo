@@ -24,6 +24,7 @@ class LayoutViewController: UIViewController {
         case alignSelf
         case alignContent
         case flexWrap
+        case positionType
         case size
         case maxSize
         case minSize
@@ -111,6 +112,10 @@ extension LayoutViewController: UITableViewDataSource {
         case .flexWrap:
             let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
             cell.title = currentTarget?.layoutModel?.flexWrap.title
+            return cell
+        case .positionType:
+            let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
+            cell.title = currentTarget?.layoutModel?.position?.title
             return cell
         case .padding:
             let cell = tableView.dequeueReusableCell(withIdentifier: PaddingTableViewCell.ReuseIdentifier) as! PaddingTableViewCell
@@ -267,6 +272,8 @@ extension LayoutViewController: UITableViewDelegate {
             return "ALIGN CONTENT"
         case .flexWrap:
             return "FLEX WRAP"
+        case .positionType:
+            return "POSITION TYPE"
         case .padding:
             return nil
         case .margin:
@@ -309,6 +316,8 @@ extension LayoutViewController: UITableViewDelegate {
             fallthrough
         case .flexWrap:
             fallthrough
+        case .positionType:
+            fallthrough
         case .alignSelf:
             fallthrough
         case .alignContent:
@@ -337,6 +346,7 @@ extension LayoutViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         guard let section = Sections(rawValue: indexPath.section) else {
             fatalError()
         }
@@ -355,6 +365,8 @@ extension LayoutViewController: UITableViewDelegate {
             didTapAlignContent()
         case .flexWrap:
             didTapFlexWrap()
+        case .positionType:
+            didTapPositionType()
         case .padding:
             break
         case .margin:
@@ -385,6 +397,27 @@ extension LayoutViewController {
                     return
                 }
                 strongSelf.currentTarget?.layoutModel?.flexDirection = value
+                strongSelf.currentTarget?.applyLayoutModel()
+                strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                strongSelf.delegate?.setNeedsLayoutComponent(sender: strongSelf)
+            }))
+        }
+        ac.popoverPresentationController?.sourceView = cell
+        ac.popoverPresentationController?.permittedArrowDirections = .right
+        self.present(ac, animated: true, completion: nil)
+    }
+    
+    private func didTapPositionType() {
+        let indexPath = IndexPath(row: 0, section: Sections.positionType.rawValue)
+        let cell = tableView.cellForRow(at: indexPath)
+        let ac = UIAlertController(title: "Position Type", message: nil, preferredStyle: .actionSheet)
+        let allValues = YGPositionType.allValues
+        for value in allValues {
+            ac.addAction(UIAlertAction(title: value.title, style: .default, handler: { [weak self] (action) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.currentTarget?.layoutModel?.position = value
                 strongSelf.currentTarget?.applyLayoutModel()
                 strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
                 strongSelf.delegate?.setNeedsLayoutComponent(sender: strongSelf)
@@ -504,19 +537,29 @@ extension LayoutViewController {
         guard let direction = Direction(rawValue: sender.tag) else {
             fatalError()
         }
-        guard let text = sender.text else {
-            return
-        }
-        let value: Float = NSString(string: text).floatValue
-        switch direction {
-        case .left:
-            currentTarget?.layoutModel?.paddingLeft = YGValue(value: value, unit: .point)
-        case .right:
-            currentTarget?.layoutModel?.paddingRight = YGValue(value: value, unit: .point)
-        case .top:
-            currentTarget?.layoutModel?.paddingTop = YGValue(value: value, unit: .point)
-        case .bottom:
-            currentTarget?.layoutModel?.paddingBottom = YGValue(value: value, unit: .point)
+        if let text = sender.text, !text.isEmpty {
+            let value: Float = NSString(string: text).floatValue
+            switch direction {
+            case .left:
+                currentTarget?.layoutModel?.paddingLeft = YGValue(value: value, unit: .point)
+            case .right:
+                currentTarget?.layoutModel?.paddingRight = YGValue(value: value, unit: .point)
+            case .top:
+                currentTarget?.layoutModel?.paddingTop = YGValue(value: value, unit: .point)
+            case .bottom:
+                currentTarget?.layoutModel?.paddingBottom = YGValue(value: value, unit: .point)
+            }
+        } else {
+            switch direction {
+            case .left:
+                currentTarget?.layoutModel?.paddingLeft = nil
+            case .right:
+                currentTarget?.layoutModel?.paddingRight = nil
+            case .top:
+                currentTarget?.layoutModel?.paddingTop = nil
+            case .bottom:
+                currentTarget?.layoutModel?.paddingBottom = nil
+            }
         }
         currentTarget?.applyLayoutModel()
         delegate?.setNeedsLayoutComponent(sender: self)
@@ -526,19 +569,29 @@ extension LayoutViewController {
         guard let direction = Direction(rawValue: sender.tag) else {
             fatalError()
         }
-        guard let text = sender.text else {
-            return
-        }
-        let value: Float = NSString(string: text).floatValue
-        switch direction {
-        case .left:
-            currentTarget?.layoutModel?.marginLeft = YGValue(value: value, unit: .point)
-        case .right:
-            currentTarget?.layoutModel?.marginRight = YGValue(value: value, unit: .point)
-        case .top:
-            currentTarget?.layoutModel?.marginTop = YGValue(value: value, unit: .point)
-        case .bottom:
-            currentTarget?.layoutModel?.marginBottom = YGValue(value: value, unit: .point)
+        if let text = sender.text, !text.isEmpty {
+            let value: Float = NSString(string: text).floatValue
+            switch direction {
+            case .left:
+                currentTarget?.layoutModel?.marginLeft = YGValue(value: value, unit: .point)
+            case .right:
+                currentTarget?.layoutModel?.marginRight = YGValue(value: value, unit: .point)
+            case .top:
+                currentTarget?.layoutModel?.marginTop = YGValue(value: value, unit: .point)
+            case .bottom:
+                currentTarget?.layoutModel?.marginBottom = YGValue(value: value, unit: .point)
+            }
+        } else {
+            switch direction {
+            case .left:
+                currentTarget?.layoutModel?.marginLeft = nil
+            case .right:
+                currentTarget?.layoutModel?.marginRight = nil
+            case .top:
+                currentTarget?.layoutModel?.marginTop = nil
+            case .bottom:
+                currentTarget?.layoutModel?.marginBottom = nil
+            }
         }
         currentTarget?.applyLayoutModel()
         delegate?.setNeedsLayoutComponent(sender: self)
@@ -548,19 +601,29 @@ extension LayoutViewController {
         guard let direction = Direction(rawValue: sender.tag) else {
             fatalError()
         }
-        guard let text = sender.text else {
-            return
-        }
-        let value: Float = NSString(string: text).floatValue
-        switch direction {
-        case .left:
-            currentTarget?.layoutModel?.left = YGValue(value: value, unit: .point)
-        case .right:
-            currentTarget?.layoutModel?.right = YGValue(value: value, unit: .point)
-        case .top:
-            currentTarget?.layoutModel?.top = YGValue(value: value, unit: .point)
-        case .bottom:
-            currentTarget?.layoutModel?.bottom = YGValue(value: value, unit: .point)
+        if let text = sender.text, !text.isEmpty {
+            let value: Float = NSString(string: text).floatValue
+            switch direction {
+            case .left:
+                currentTarget?.layoutModel?.left = YGValue(value: value, unit: .point)
+            case .right:
+                currentTarget?.layoutModel?.right = YGValue(value: value, unit: .point)
+            case .top:
+                currentTarget?.layoutModel?.top = YGValue(value: value, unit: .point)
+            case .bottom:
+                currentTarget?.layoutModel?.bottom = YGValue(value: value, unit: .point)
+            }
+        } else {
+            switch direction {
+            case .left:
+                currentTarget?.layoutModel?.left = nil
+            case .right:
+                currentTarget?.layoutModel?.right = nil
+            case .top:
+                currentTarget?.layoutModel?.top = nil
+            case .bottom:
+                currentTarget?.layoutModel?.bottom = nil
+            }
         }
         currentTarget?.applyLayoutModel()
         delegate?.setNeedsLayoutComponent(sender: self)
@@ -570,15 +633,21 @@ extension LayoutViewController {
         guard let dimension = SizeDimension(rawValue: sender.tag) else {
             fatalError()
         }
-        guard let text = sender.text else {
-            return
-        }
-        let value: Float = NSString(string: text).floatValue
-        switch dimension {
-        case .width:
-            currentTarget?.layoutModel?.width = YGValue(value: value, unit: .point)
-        case .height:
-            currentTarget?.layoutModel?.height = YGValue(value: value, unit: .point)
+        if let text = sender.text, !text.isEmpty {
+            let value: Float = NSString(string: text).floatValue
+            switch dimension {
+            case .width:
+                currentTarget?.layoutModel?.width = YGValue(value: value, unit: .point)
+            case .height:
+                currentTarget?.layoutModel?.height = YGValue(value: value, unit: .point)
+            }
+        } else {
+            switch dimension {
+            case .width:
+                currentTarget?.layoutModel?.width = nil
+            case .height:
+                currentTarget?.layoutModel?.height = nil
+            }
         }
         currentTarget?.applyLayoutModel()
         delegate?.setNeedsLayoutComponent(sender: self)
@@ -588,15 +657,21 @@ extension LayoutViewController {
         guard let dimension = SizeDimension(rawValue: sender.tag) else {
             fatalError()
         }
-        guard let text = sender.text else {
-            return
-        }
-        let value: Float = NSString(string: text).floatValue
-        switch dimension {
-        case .width:
-            currentTarget?.layoutModel?.maxWidth = YGValue(value: value, unit: .point)
-        case .height:
-            currentTarget?.layoutModel?.maxHeight = YGValue(value: value, unit: .point)
+        if let text = sender.text, !text.isEmpty {
+            let value: Float = NSString(string: text).floatValue
+            switch dimension {
+            case .width:
+                currentTarget?.layoutModel?.maxWidth = YGValue(value: value, unit: .point)
+            case .height:
+                currentTarget?.layoutModel?.maxHeight = YGValue(value: value, unit: .point)
+            }
+        } else {
+            switch dimension {
+            case .width:
+                currentTarget?.layoutModel?.maxWidth = nil
+            case .height:
+                currentTarget?.layoutModel?.maxHeight = nil
+            }
         }
         currentTarget?.applyLayoutModel()
         delegate?.setNeedsLayoutComponent(sender: self)
@@ -606,15 +681,21 @@ extension LayoutViewController {
         guard let dimension = SizeDimension(rawValue: sender.tag) else {
             fatalError()
         }
-        guard let text = sender.text else {
-            return
-        }
-        let value: Float = NSString(string: text).floatValue
-        switch dimension {
-        case .width:
-            currentTarget?.layoutModel?.minWidth = YGValue(value: value, unit: .point)
-        case .height:
-            currentTarget?.layoutModel?.minHeight = YGValue(value: value, unit: .point)
+        if let text = sender.text, !text.isEmpty {
+            let value: Float = NSString(string: text).floatValue
+            switch dimension {
+            case .width:
+                currentTarget?.layoutModel?.minWidth = YGValue(value: value, unit: .point)
+            case .height:
+                currentTarget?.layoutModel?.minHeight = YGValue(value: value, unit: .point)
+            }
+        } else {
+            switch dimension {
+            case .width:
+                currentTarget?.layoutModel?.minWidth = nil
+            case .height:
+                currentTarget?.layoutModel?.minHeight = nil
+            }
         }
         currentTarget?.applyLayoutModel()
         delegate?.setNeedsLayoutComponent(sender: self)

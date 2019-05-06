@@ -1,38 +1,28 @@
 PODS:
-  - RxCocoa (5.0.0):
-    - RxRelay (~> 5)
-    - RxSwift (~> 5)
-  - RxRelay (5.0.0):
-    - RxSwift (~> 5)
-  - RxSwift (5.0.0)
+  - IHKeyboardAvoiding (4.6)
   - SnapKit (5.0.0)
   - Yoga (1.14.0)
   - YogaKit (1.14.0):
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
-  - RxCocoa
-  - RxSwift
-  - SnapKit
-  - YogaKit
+  - IHKeyboardAvoiding (= 4.6)
+  - SnapKit (= 5.0.0)
+  - YogaKit (= 1.14.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - RxCocoa
-    - RxRelay
-    - RxSwift
+    - IHKeyboardAvoiding
     - SnapKit
     - Yoga
     - YogaKit
 
 SPEC CHECKSUMS:
-  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
-  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
-  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
+  IHKeyboardAvoiding: 2a664fdb5f964359fa7ec8fc5c9aebb447583ff8
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   Yoga: cff67a400f6b74dc38eb0bad4f156673d9aa980c
   YogaKit: 5d1dc899cecd5946e5a758a0c3997704a4b48d01
 
-PODFILE CHECKSUM: b38f71b041610107aadd95dcd5efcf8b1ff432e4
+PODFILE CHECKSUM: 833dc2cffe65be419716e77e2de509ba4ace6543
 
 COCOAPODS: 1.5.3

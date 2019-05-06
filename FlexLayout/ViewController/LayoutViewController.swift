@@ -8,7 +8,7 @@
 
 import UIKit
 import YogaKit
-import RxSwift
+import IHKeyboardAvoiding
 
 protocol LayoutViewControllerProtocol: AnyObject {
     func onTapAddSubView(sender: LayoutViewController)
@@ -119,6 +119,10 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.placeholder = "0"
             cell.topTextField.placeholder = "0"
             cell.bottomTextField.placeholder = "0"
+            cell.leftTextField.delegate = self
+            cell.rightTextField.delegate = self
+            cell.topTextField.delegate = self
+            cell.bottomTextField.delegate = self
             cell.leftTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             cell.rightTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
@@ -143,6 +147,10 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.placeholder = "0"
             cell.topTextField.placeholder = "0"
             cell.bottomTextField.placeholder = "0"
+            cell.leftTextField.delegate = self
+            cell.rightTextField.delegate = self
+            cell.topTextField.delegate = self
+            cell.bottomTextField.delegate = self
             cell.leftTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
             cell.rightTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
@@ -167,6 +175,10 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.placeholder = "0"
             cell.topTextField.placeholder = "0"
             cell.bottomTextField.placeholder = "0"
+            cell.leftTextField.delegate = self
+            cell.rightTextField.delegate = self
+            cell.topTextField.delegate = self
+            cell.bottomTextField.delegate = self
             cell.leftTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
             cell.rightTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
@@ -188,6 +200,8 @@ extension LayoutViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
             cell.widthTextField.placeholder = "0"
             cell.heightTextField.placeholder = "0"
+            cell.widthTextField.delegate = self
+            cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didSizeChanged(sender:)), for: .editingChanged)
             cell.heightTextField.addTarget(self, action: #selector(didSizeChanged(sender:)), for: .editingChanged)
             if let width = currentTarget?.layoutModel?.width, let value = width.pointValue {
@@ -201,6 +215,8 @@ extension LayoutViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
             cell.widthTextField.placeholder = "0"
             cell.heightTextField.placeholder = "0"
+            cell.widthTextField.delegate = self
+            cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didMaxSizeChanged(sender:)), for: .editingChanged)
             cell.heightTextField.addTarget(self, action: #selector(didMaxSizeChanged(sender:)), for: .editingChanged)
             if let width = currentTarget?.layoutModel?.maxWidth, let value = width.pointValue {
@@ -214,6 +230,8 @@ extension LayoutViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: SizeTableViewCell.ReuseIdentifier) as! SizeTableViewCell
             cell.widthTextField.placeholder = "0"
             cell.heightTextField.placeholder = "0"
+            cell.widthTextField.delegate = self
+            cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didMinSizeChanged(sender:)), for: .editingChanged)
             cell.heightTextField.addTarget(self, action: #selector(didMinSizeChanged(sender:)), for: .editingChanged)
             if let width = currentTarget?.layoutModel?.minWidth, let value = width.pointValue {
@@ -610,5 +628,12 @@ extension LayoutViewController: AddNodeCellProtocol {
     
     func onRemoveNode(sender: AddNodeTableViewCell, target: UIButton) {
         
+    }
+}
+
+extension LayoutViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        KeyboardAvoiding.setAvoidingView(tableView, withTriggerView: textField)
+        return true
     }
 }

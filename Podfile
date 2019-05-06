@@ -6,10 +6,9 @@ target 'FlexLayout' do
   use_frameworks!
 
   # Pods for FlexLayout
-  pod 'YogaKit'
-  pod 'SnapKit'
-  pod 'RxSwift'
-  pod 'RxCocoa'
+  pod 'YogaKit', '1.14.0'
+  pod 'SnapKit', '5.0.0'
+  pod 'IHKeyboardAvoiding', '4.6'
 
   target 'FlexLayoutTests' do
     inherit! :search_paths

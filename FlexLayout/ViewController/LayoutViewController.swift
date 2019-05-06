@@ -18,6 +18,7 @@ protocol LayoutViewControllerProtocol: AnyObject {
 class LayoutViewController: UIViewController {
     enum Sections: Int {
         case addNode = 0
+        case direction
         case flexDirection
         case justifyContent
         case alignItems
@@ -88,6 +89,10 @@ extension LayoutViewController: UITableViewDataSource {
         case .addNode:
             let cell = tableView.dequeueReusableCell(withIdentifier: AddNodeTableViewCell.ReuseIdentifier) as! AddNodeTableViewCell
             cell.delegate = self
+            return cell
+        case .direction:
+            let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
+            cell.title = currentTarget?.layoutModel?.direction.title
             return cell
         case .flexDirection:
             let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
@@ -260,6 +265,8 @@ extension LayoutViewController: UITableViewDelegate {
         switch section {
         case .addNode:
             return nil
+        case .direction:
+            return "DIRECTION"
         case .flexDirection:
             return "FLEX DIRECTION"
         case .justifyContent:
@@ -304,6 +311,8 @@ extension LayoutViewController: UITableViewDelegate {
             return CGFloat.leastNormalMagnitude
         case .addNode:
             return CGFloat.leastNormalMagnitude
+        case .direction:
+            fallthrough
         case .size:
             fallthrough
         case .maxSize:
@@ -353,6 +362,8 @@ extension LayoutViewController: UITableViewDelegate {
         switch section {
         case .addNode:
             break
+        case .direction:
+            didTapDirection()
         case .flexDirection:
             didTapFlexDirection()
         case .justifyContent:
@@ -386,6 +397,27 @@ extension LayoutViewController: UITableViewDelegate {
 }
 
 extension LayoutViewController {
+    private func didTapDirection() {
+        let indexPath = IndexPath(row: 0, section: Sections.direction.rawValue)
+        let cell = tableView.cellForRow(at: indexPath)
+        let ac = UIAlertController(title: "Direction", message: nil, preferredStyle: .actionSheet)
+        let allValues = YGDirection.allValues
+        for value in allValues {
+            ac.addAction(UIAlertAction(title: value.title, style: .default, handler: { [weak self] (action) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.currentTarget?.layoutModel?.direction = value
+                strongSelf.currentTarget?.applyLayoutModel()
+                strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                strongSelf.delegate?.setNeedsLayoutComponent(sender: strongSelf)
+            }))
+        }
+        ac.popoverPresentationController?.sourceView = cell
+        ac.popoverPresentationController?.permittedArrowDirections = .right
+        self.present(ac, animated: true, completion: nil)
+    }
+    
     private func didTapFlexDirection() {
         let indexPath = IndexPath(row: 0, section: Sections.flexDirection.rawValue)
         let cell = tableView.cellForRow(at: indexPath)

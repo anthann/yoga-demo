@@ -9,6 +9,25 @@
 import Foundation
 import YogaKit
 
+extension YGDirection {
+    var title: String {
+        switch self {
+        case .inherit:
+            return "INHERIT"
+        case .LTR:
+            return "LTR"
+        case .RTL:
+            return "RTL"
+        @unknown default:
+            return "UNKNOWN"
+        }
+    }
+    
+    static var allValues: [YGDirection] {
+        return [.inherit, .LTR, .RTL]
+    }
+}
+
 extension YGFlexDirection {
     var title: String {
         switch self {

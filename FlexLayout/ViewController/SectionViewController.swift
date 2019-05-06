@@ -125,6 +125,7 @@ class SectionViewController: UIViewController {
         } else {
             componentView.addSubview(view)
         }
+        view.applyLayoutModel()
         componentView.yoga.applyLayout(preservingOrigin: true)
     }
     

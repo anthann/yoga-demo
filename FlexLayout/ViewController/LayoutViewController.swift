@@ -21,6 +21,7 @@ class LayoutViewController: UIViewController {
         case direction
         case flexDirection
         case justifyContent
+        case bgs
         case alignItems
         case alignSelf
         case alignContent
@@ -45,6 +46,7 @@ class LayoutViewController: UIViewController {
         tableView.register(DropDownTableViewCell.self, forCellReuseIdentifier: DropDownTableViewCell.ReuseIdentifier)
         tableView.register(PaddingTableViewCell.self, forCellReuseIdentifier: PaddingTableViewCell.ReuseIdentifier)
         tableView.register(SizeTableViewCell.self, forCellReuseIdentifier: SizeTableViewCell.ReuseIdentifier)
+        tableView.register(BGSTableViewCell.self, forCellReuseIdentifier: BGSTableViewCell.ReuseIdentifier)
         return tableView
     }()
     
@@ -251,6 +253,24 @@ extension LayoutViewController: UITableViewDataSource {
                 cell.heightTextField.text = String(format: "%.1f", value)
             }
             return cell
+        case .bgs:
+            let cell = tableView.dequeueReusableCell(withIdentifier: BGSTableViewCell.ReuseIdentifier) as! BGSTableViewCell
+            cell.basisTextField.delegate = self
+            cell.growTextField.delegate = self
+            cell.shrinkTextField.delegate = self
+            cell.basisTextField.addTarget(self, action: #selector(didBGSChanged(sender:)), for: .editingChanged)
+            cell.growTextField.addTarget(self, action: #selector(didBGSChanged(sender:)), for: .editingChanged)
+            cell.shrinkTextField.addTarget(self, action: #selector(didBGSChanged(sender:)), for: .editingChanged)
+            if let basis = currentTarget?.layoutModel?.flexBasis, case YGValueWrapper.point(let value) = basis {
+                cell.basisTextField.text = String(format: "%.1f", value)
+            }
+            if let grow = currentTarget?.layoutModel?.flexGrow {
+                cell.growTextField.text = String(format: "%.1f", grow)
+            }
+            if let shrink = currentTarget?.layoutModel?.flexShrink {
+                cell.shrinkTextField.text = String(format: "%.1f", shrink)
+            }
+            return cell
         case .max:
             fatalError()
         }
@@ -293,6 +313,8 @@ extension LayoutViewController: UITableViewDelegate {
             return "MAX_WIDTH X MAX_HEIGHT"
         case .minSize:
             return "MIN_WIDTH X MIN_HEIGHT"
+        case .bgs:
+            return "BASIC  GROW  SHRINK"
         case .max:
             fatalError()
         }
@@ -311,6 +333,8 @@ extension LayoutViewController: UITableViewDelegate {
             return CGFloat.leastNormalMagnitude
         case .addNode:
             return CGFloat.leastNormalMagnitude
+        case .bgs:
+            fallthrough
         case .direction:
             fallthrough
         case .size:
@@ -378,6 +402,8 @@ extension LayoutViewController: UITableViewDelegate {
             didTapFlexWrap()
         case .positionType:
             didTapPositionType()
+        case .bgs:
+            break
         case .padding:
             break
         case .margin:
@@ -727,6 +753,34 @@ extension LayoutViewController {
                 currentTarget?.layoutModel?.minWidth = nil
             case .height:
                 currentTarget?.layoutModel?.minHeight = nil
+            }
+        }
+        currentTarget?.applyLayoutModel()
+        delegate?.setNeedsLayoutComponent(sender: self)
+    }
+    
+    @objc func didBGSChanged(sender: UITextField) {
+        guard let bgs = BGS(rawValue: sender.tag) else {
+            fatalError()
+        }
+        if let text = sender.text, !text.isEmpty {
+            let value: Float = NSString(string: text).floatValue
+            switch bgs {
+            case .basic:
+                currentTarget?.layoutModel?.flexBasis = YGValueWrapper.point(value)
+            case .shrink:
+                currentTarget?.layoutModel?.flexShrink = CGFloat(value)
+            case .grow:
+                currentTarget?.layoutModel?.flexGrow = CGFloat(value)
+            }
+        } else {
+            switch bgs {
+            case .basic:
+                currentTarget?.layoutModel?.flexBasis = YGValueWrapper.auto
+            case .shrink:
+                currentTarget?.layoutModel?.flexShrink = 1.0
+            case .grow:
+                currentTarget?.layoutModel?.flexGrow = 0.0
             }
         }
         currentTarget?.applyLayoutModel()

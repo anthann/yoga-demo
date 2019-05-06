@@ -86,8 +86,8 @@ class SectionViewController: UIViewController {
     lazy var componentView: ComponentView = {
         var layout = YGLayoutWapperModel()
         layout.justifyContent = .flexStart
-        layout.width = YGValue(value: 360.0, unit: .point)
-        layout.height = YGValue(value: 300.0, unit: .point)
+        layout.width = YGValueWrapper.point(360)
+        layout.height = YGValueWrapper.point(300)
         let view = ComponentView()
         view.delegate = self
         view.layoutModel = layout
@@ -115,8 +115,8 @@ class SectionViewController: UIViewController {
     
     func addView() {
         var layout = YGLayoutWapperModel()
-        layout.width = YGValue(value: 100.0, unit: .point)
-        layout.height = YGValue(value: 100.0, unit: .point)
+        layout.width = YGValueWrapper.point(100)
+        layout.height = YGValueWrapper.point(100)
         let view = ComponentView()
         view.layoutModel = layout
         view.delegate = self

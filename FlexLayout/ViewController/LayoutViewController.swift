@@ -115,7 +115,7 @@ extension LayoutViewController: UITableViewDataSource {
             return cell
         case .positionType:
             let cell = tableView.dequeueReusableCell(withIdentifier: DropDownTableViewCell.ReuseIdentifier) as! DropDownTableViewCell
-            cell.title = currentTarget?.layoutModel?.position?.title
+            cell.title = currentTarget?.layoutModel?.position.title
             return cell
         case .padding:
             let cell = tableView.dequeueReusableCell(withIdentifier: PaddingTableViewCell.ReuseIdentifier) as! PaddingTableViewCell
@@ -132,16 +132,16 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             cell.bottomTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
-            if let left = currentTarget?.layoutModel?.actualPaddingLeft, let value = left.pointValue {
+            if let left = currentTarget?.layoutModel?.actualPaddingLeft, case YGValueWrapper.point(let value) = left {
                 cell.leftTextField.text = String(format: "%.1f", value)
             }
-            if let right = currentTarget?.layoutModel?.actualPaddingRight, let value = right.pointValue {
+            if let right = currentTarget?.layoutModel?.actualPaddingRight, case YGValueWrapper.point(let value) = right {
                 cell.rightTextField.text = String(format: "%.1f", value)
             }
-            if let top = currentTarget?.layoutModel?.actualPaddingTop, let value = top.pointValue {
+            if let top = currentTarget?.layoutModel?.actualPaddingTop, case YGValueWrapper.point(let value) = top {
                 cell.topTextField.text = String(format: "%.1f", value)
             }
-            if let bottom = currentTarget?.layoutModel?.actualPaddingBottom, let value = bottom.pointValue {
+            if let bottom = currentTarget?.layoutModel?.actualPaddingBottom, case YGValueWrapper.point(let value) = bottom {
                 cell.bottomTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -160,16 +160,16 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
             cell.bottomTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
-            if let left = currentTarget?.layoutModel?.actualMarginLeft, let value = left.pointValue {
+            if let left = currentTarget?.layoutModel?.actualMarginLeft, case YGValueWrapper.point(let value) = left {
                 cell.leftTextField.text = String(format: "%.1f", value)
             }
-            if let right = currentTarget?.layoutModel?.actualMarginRight, let value = right.pointValue {
+            if let right = currentTarget?.layoutModel?.actualMarginRight, case YGValueWrapper.point(let value) = right {
                 cell.rightTextField.text = String(format: "%.1f", value)
             }
-            if let top = currentTarget?.layoutModel?.actualMarginTop, let value = top.pointValue {
+            if let top = currentTarget?.layoutModel?.actualMarginTop, case YGValueWrapper.point(let value) = top {
                 cell.topTextField.text = String(format: "%.1f", value)
             }
-            if let bottom = currentTarget?.layoutModel?.actualMarginBottom, let value = bottom.pointValue {
+            if let bottom = currentTarget?.layoutModel?.actualMarginBottom, case YGValueWrapper.point(let value) = bottom {
                 cell.bottomTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -188,16 +188,16 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
             cell.bottomTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
-            if let left = currentTarget?.layoutModel?.left, let value = left.pointValue {
+            if let left = currentTarget?.layoutModel?.left, case YGValueWrapper.point(let value) = left {
                 cell.leftTextField.text = String(format: "%.1f", value)
             }
-            if let right = currentTarget?.layoutModel?.right, let value = right.pointValue {
+            if let right = currentTarget?.layoutModel?.right, case YGValueWrapper.point(let value) = right {
                 cell.rightTextField.text = String(format: "%.1f", value)
             }
-            if let top = currentTarget?.layoutModel?.top, let value = top.pointValue {
+            if let top = currentTarget?.layoutModel?.top, case YGValueWrapper.point(let value) = top {
                 cell.topTextField.text = String(format: "%.1f", value)
             }
-            if let bottom = currentTarget?.layoutModel?.bottom, let value = bottom.pointValue {
+            if let bottom = currentTarget?.layoutModel?.bottom, case YGValueWrapper.point(let value) = bottom {
                 cell.bottomTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -209,10 +209,10 @@ extension LayoutViewController: UITableViewDataSource {
             cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didSizeChanged(sender:)), for: .editingChanged)
             cell.heightTextField.addTarget(self, action: #selector(didSizeChanged(sender:)), for: .editingChanged)
-            if let width = currentTarget?.layoutModel?.width, let value = width.pointValue {
+            if let width = currentTarget?.layoutModel?.width, case YGValueWrapper.point(let value) = width {
                 cell.widthTextField.text = String(format: "%.1f", value)
             }
-            if let height = currentTarget?.layoutModel?.height, let value = height.pointValue {
+            if let height = currentTarget?.layoutModel?.height, case YGValueWrapper.point(let value) = height {
                 cell.heightTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -224,10 +224,10 @@ extension LayoutViewController: UITableViewDataSource {
             cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didMaxSizeChanged(sender:)), for: .editingChanged)
             cell.heightTextField.addTarget(self, action: #selector(didMaxSizeChanged(sender:)), for: .editingChanged)
-            if let width = currentTarget?.layoutModel?.maxWidth, let value = width.pointValue {
+            if let width = currentTarget?.layoutModel?.maxWidth, case YGValueWrapper.point(let value) = width {
                 cell.widthTextField.text = String(format: "%.1f", value)
             }
-            if let height = currentTarget?.layoutModel?.maxHeight, let value = height.pointValue {
+            if let height = currentTarget?.layoutModel?.maxHeight, case YGValueWrapper.point(let value) = height {
                 cell.heightTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -239,10 +239,10 @@ extension LayoutViewController: UITableViewDataSource {
             cell.heightTextField.delegate = self
             cell.widthTextField.addTarget(self, action: #selector(didMinSizeChanged(sender:)), for: .editingChanged)
             cell.heightTextField.addTarget(self, action: #selector(didMinSizeChanged(sender:)), for: .editingChanged)
-            if let width = currentTarget?.layoutModel?.minWidth, let value = width.pointValue {
+            if let width = currentTarget?.layoutModel?.minWidth, case YGValueWrapper.point(let value) = width {
                 cell.widthTextField.text = String(format: "%.1f", value)
             }
-            if let height = currentTarget?.layoutModel?.minHeight, let value = height.pointValue {
+            if let height = currentTarget?.layoutModel?.minHeight, case YGValueWrapper.point(let value) = height {
                 cell.heightTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -541,13 +541,13 @@ extension LayoutViewController {
             let value: Float = NSString(string: text).floatValue
             switch direction {
             case .left:
-                currentTarget?.layoutModel?.paddingLeft = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.paddingLeft = YGValueWrapper.point(value)
             case .right:
-                currentTarget?.layoutModel?.paddingRight = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.paddingRight = YGValueWrapper.point(value)
             case .top:
-                currentTarget?.layoutModel?.paddingTop = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.paddingTop = YGValueWrapper.point(value)
             case .bottom:
-                currentTarget?.layoutModel?.paddingBottom = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.paddingBottom = YGValueWrapper.point(value)
             }
         } else {
             switch direction {
@@ -573,13 +573,13 @@ extension LayoutViewController {
             let value: Float = NSString(string: text).floatValue
             switch direction {
             case .left:
-                currentTarget?.layoutModel?.marginLeft = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.marginLeft = YGValueWrapper.point(value)
             case .right:
-                currentTarget?.layoutModel?.marginRight = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.marginRight = YGValueWrapper.point(value)
             case .top:
-                currentTarget?.layoutModel?.marginTop = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.marginTop = YGValueWrapper.point(value)
             case .bottom:
-                currentTarget?.layoutModel?.marginBottom = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.marginBottom = YGValueWrapper.point(value)
             }
         } else {
             switch direction {
@@ -605,13 +605,13 @@ extension LayoutViewController {
             let value: Float = NSString(string: text).floatValue
             switch direction {
             case .left:
-                currentTarget?.layoutModel?.left = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.left = YGValueWrapper.point(value)
             case .right:
-                currentTarget?.layoutModel?.right = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.right = YGValueWrapper.point(value)
             case .top:
-                currentTarget?.layoutModel?.top = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.top = YGValueWrapper.point(value)
             case .bottom:
-                currentTarget?.layoutModel?.bottom = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.bottom = YGValueWrapper.point(value)
             }
         } else {
             switch direction {
@@ -637,9 +637,9 @@ extension LayoutViewController {
             let value: Float = NSString(string: text).floatValue
             switch dimension {
             case .width:
-                currentTarget?.layoutModel?.width = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.width = YGValueWrapper.point(value)
             case .height:
-                currentTarget?.layoutModel?.height = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.height = YGValueWrapper.point(value)
             }
         } else {
             switch dimension {
@@ -661,9 +661,9 @@ extension LayoutViewController {
             let value: Float = NSString(string: text).floatValue
             switch dimension {
             case .width:
-                currentTarget?.layoutModel?.maxWidth = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.maxWidth = YGValueWrapper.point(value)
             case .height:
-                currentTarget?.layoutModel?.maxHeight = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.maxHeight = YGValueWrapper.point(value)
             }
         } else {
             switch dimension {
@@ -685,9 +685,9 @@ extension LayoutViewController {
             let value: Float = NSString(string: text).floatValue
             switch dimension {
             case .width:
-                currentTarget?.layoutModel?.minWidth = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.minWidth = YGValueWrapper.point(value)
             case .height:
-                currentTarget?.layoutModel?.minHeight = YGValue(value: value, unit: .point)
+                currentTarget?.layoutModel?.minHeight = YGValueWrapper.point(value)
             }
         } else {
             switch dimension {

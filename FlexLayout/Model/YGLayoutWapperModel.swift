@@ -12,54 +12,54 @@ import YogaKit
 /// Swift Wrapper of YGLayout
 /// 对于默认值不明确的属性，使用optional作为缺省值
 struct YGLayoutWapperModel {
-    var direction: YGDirection?
+    var direction: YGDirection = .LTR
     var flexDirection: YGFlexDirection = .row
     var justifyContent: YGJustify = .flexStart
     var alignContent: YGAlign = .flexStart
     var alignItems: YGAlign = .stretch
     var alignSelf: YGAlign = .auto
-    var position: YGPositionType?
+    var position: YGPositionType = .relative
     var flexWrap: YGWrap = .noWrap
     var overflow: YGOverflow?
     var display: YGDisplay?
     var flexGrow: CGFloat = 0.0
     var flexShrink: CGFloat = 1.0
-    var flexBasis: YGValue? = YGValue(value: 0, unit: .auto)
-    var left: YGValue?
-    var top: YGValue?
-    var right: YGValue?
-    var bottom: YGValue?
-    var start: YGValue?
-    var end: YGValue?
-    var marginLeft: YGValue?
-    var marginTop: YGValue?
-    var marginRight: YGValue?
-    var marginBottom: YGValue?
-    var marginStart: YGValue?
-    var marginEnd: YGValue?
-    var marginHorizontal: YGValue?
-    var marginVertical: YGValue?
-    var margin: YGValue?
-    var paddingLeft: YGValue?
-    var paddingTop: YGValue?
-    var paddingRight: YGValue?
-    var paddingBottom: YGValue?
-    var paddingStart: YGValue?
-    var paddingEnd: YGValue?
-    var paddingHorizontal: YGValue?
-    var paddingVertical: YGValue?
-    var padding: YGValue?
-    var width: YGValue?
-    var height: YGValue?
-    var minWidth: YGValue?
-    var minHeight: YGValue?
-    var maxWidth: YGValue?
-    var maxHeight: YGValue?
+    var flexBasis: YGValueWrapper = .auto
+    var left: YGValueWrapper?
+    var top: YGValueWrapper?
+    var right: YGValueWrapper?
+    var bottom: YGValueWrapper?
+    var start: YGValueWrapper?
+    var end: YGValueWrapper?
+    var marginLeft: YGValueWrapper?
+    var marginTop: YGValueWrapper?
+    var marginRight: YGValueWrapper?
+    var marginBottom: YGValueWrapper?
+    var marginStart: YGValueWrapper?
+    var marginEnd: YGValueWrapper?
+    var marginHorizontal: YGValueWrapper?
+    var marginVertical: YGValueWrapper?
+    var margin: YGValueWrapper?
+    var paddingLeft: YGValueWrapper?
+    var paddingTop: YGValueWrapper?
+    var paddingRight: YGValueWrapper?
+    var paddingBottom: YGValueWrapper?
+    var paddingStart: YGValueWrapper?
+    var paddingEnd: YGValueWrapper?
+    var paddingHorizontal: YGValueWrapper?
+    var paddingVertical: YGValueWrapper?
+    var padding: YGValueWrapper?
+    var width: YGValueWrapper?
+    var height: YGValueWrapper?
+    var minWidth: YGValueWrapper?
+    var minHeight: YGValueWrapper?
+    var maxWidth: YGValueWrapper?
+    var maxHeight: YGValueWrapper?
     var aspectRatio: CGFloat?
 }
 
 extension YGLayoutWapperModel {
-    var actualPaddingLeft: YGValue? {
+    var actualPaddingLeft: YGValueWrapper? {
         if let p = paddingLeft {
             return p
         } else if let p = paddingHorizontal {
@@ -71,7 +71,7 @@ extension YGLayoutWapperModel {
         }
     }
     
-    var actualPaddingRight: YGValue? {
+    var actualPaddingRight: YGValueWrapper? {
         if let p = paddingRight {
             return p
         } else if let p = paddingHorizontal {
@@ -83,7 +83,7 @@ extension YGLayoutWapperModel {
         }
     }
     
-    var actualPaddingTop: YGValue? {
+    var actualPaddingTop: YGValueWrapper? {
         if let p = paddingTop {
             return p
         } else if let p = paddingVertical {
@@ -95,7 +95,7 @@ extension YGLayoutWapperModel {
         }
     }
     
-    var actualPaddingBottom: YGValue? {
+    var actualPaddingBottom: YGValueWrapper? {
         if let p = paddingBottom {
             return p
         } else if let p = paddingVertical {
@@ -107,7 +107,7 @@ extension YGLayoutWapperModel {
         }
     }
     
-    var actualMarginLeft: YGValue? {
+    var actualMarginLeft: YGValueWrapper? {
         if let p = marginLeft {
             return p
         } else if let p = marginHorizontal {
@@ -119,7 +119,7 @@ extension YGLayoutWapperModel {
         }
     }
     
-    var actualMarginRight: YGValue? {
+    var actualMarginRight: YGValueWrapper? {
         if let p = marginRight {
             return p
         } else if let p = marginHorizontal {
@@ -131,7 +131,7 @@ extension YGLayoutWapperModel {
         }
     }
     
-    var actualMarginTop: YGValue? {
+    var actualMarginTop: YGValueWrapper? {
         if let p = marginTop {
             return p
         } else if let p = marginVertical {
@@ -143,7 +143,7 @@ extension YGLayoutWapperModel {
         }
     }
     
-    var actualMarginBottom: YGValue? {
+    var actualMarginBottom: YGValueWrapper? {
         if let p = marginBottom {
             return p
         } else if let p = marginVertical {

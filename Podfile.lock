@@ -1,24 +1,38 @@
 PODS:
-  - SnapKit (4.2.0)
+  - RxCocoa (5.0.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.0.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.0)
+  - SnapKit (5.0.0)
   - Yoga (1.14.0)
   - YogaKit (1.14.0):
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
+  - RxCocoa
+  - RxSwift
   - SnapKit
   - YogaKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - SnapKit
     - Yoga
     - YogaKit
 
 SPEC CHECKSUMS:
-  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
+  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
+  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
+  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   Yoga: cff67a400f6b74dc38eb0bad4f156673d9aa980c
   YogaKit: 5d1dc899cecd5946e5a758a0c3997704a4b48d01
 
-PODFILE CHECKSUM: f92f884f6a8d8ad3eebbd637aa74e98331f807e5
+PODFILE CHECKSUM: b38f71b041610107aadd95dcd5efcf8b1ff432e4
 
 COCOAPODS: 1.5.3

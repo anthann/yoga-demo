@@ -8,6 +8,8 @@ target 'FlexLayout' do
   # Pods for FlexLayout
   pod 'YogaKit'
   pod 'SnapKit'
+  pod 'RxSwift'
+  pod 'RxCocoa'
 
   target 'FlexLayoutTests' do
     inherit! :search_paths

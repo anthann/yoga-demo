@@ -8,6 +8,13 @@
 
 import UIKit
 
+enum Direction: Int {
+    case left = 1
+    case right
+    case top
+    case bottom
+}
+
 class PaddingTableViewCell: UITableViewCell {
     static let ReuseIdentifier: String = "PaddingTableViewCellReuseId"
     
@@ -28,6 +35,7 @@ class PaddingTableViewCell: UITableViewCell {
             make.center.equalToSuperview()
         }
         
+        topTextField.tag = Direction.top.rawValue
         topTextField.keyboardType = .asciiCapableNumberPad
         topTextField.autocorrectionType = .no
         topTextField.autocapitalizationType = .none
@@ -41,6 +49,7 @@ class PaddingTableViewCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 80, height: 40))
         }
         
+        bottomTextField.tag = Direction.bottom.rawValue
         bottomTextField.keyboardType = .asciiCapableNumberPad
         bottomTextField.autocorrectionType = .no
         bottomTextField.autocapitalizationType = .none
@@ -54,6 +63,7 @@ class PaddingTableViewCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 80, height: 40))
         }
         
+        leftTextField.tag = Direction.left.rawValue
         leftTextField.keyboardType = .asciiCapableNumberPad
         leftTextField.autocorrectionType = .no
         leftTextField.autocapitalizationType = .none
@@ -67,6 +77,7 @@ class PaddingTableViewCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 80, height: 40))
         }
         
+        rightTextField.tag = Direction.right.rawValue
         rightTextField.keyboardType = .asciiCapableNumberPad
         rightTextField.autocorrectionType = .no
         rightTextField.autocapitalizationType = .none
@@ -97,11 +108,15 @@ class PaddingTableViewCell: UITableViewCell {
         label.text = nil
         topTextField.text = nil
         topTextField.placeholder = "0"
+        topTextField.removeTarget(nil, action: nil, for: .touchUpInside)
         bottomTextField.text = nil
         bottomTextField.placeholder = "0"
+        bottomTextField.removeTarget(nil, action: nil, for: .touchUpInside)
         leftTextField.text = nil
         leftTextField.placeholder = "0"
+        leftTextField.removeTarget(nil, action: nil, for: .touchUpInside)
         rightTextField.text = nil
         rightTextField.placeholder = "0"
+        rightTextField.removeTarget(nil, action: nil, for: .touchUpInside)
     }
 }

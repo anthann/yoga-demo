@@ -15,13 +15,6 @@ protocol LayoutViewControllerProtocol: AnyObject {
     func setNeedsLayoutComponent(sender: LayoutViewController)
 }
 
-fileprivate enum Direction {
-    case left
-    case right
-    case top
-    case bottom
-}
-
 class LayoutViewController: UIViewController {
     enum Sections: Int {
         case addNode = 0
@@ -32,6 +25,8 @@ class LayoutViewController: UIViewController {
         case alignContent
         case flexWrap
         case padding
+        case margin
+        case position
         case max
     }
     
@@ -120,6 +115,10 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.placeholder = "0"
             cell.topTextField.placeholder = "0"
             cell.bottomTextField.placeholder = "0"
+            cell.leftTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
+            cell.rightTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
+            cell.topTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
+            cell.bottomTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             if let left = currentTarget?.layoutModel?.actualPaddingLeft, let value = left.pointValue {
                 cell.leftTextField.text = String(format: "%.1f", value)
             }
@@ -130,6 +129,54 @@ extension LayoutViewController: UITableViewDataSource {
                 cell.topTextField.text = String(format: "%.1f", value)
             }
             if let bottom = currentTarget?.layoutModel?.actualPaddingBottom, let value = bottom.pointValue {
+                cell.bottomTextField.text = String(format: "%.1f", value)
+            }
+            return cell
+        case .margin:
+            let cell = tableView.dequeueReusableCell(withIdentifier: PaddingTableViewCell.ReuseIdentifier) as! PaddingTableViewCell
+            cell.label.text = "MARGIN"
+            cell.leftTextField.placeholder = "0"
+            cell.rightTextField.placeholder = "0"
+            cell.topTextField.placeholder = "0"
+            cell.bottomTextField.placeholder = "0"
+            cell.leftTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
+            cell.rightTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
+            cell.topTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
+            cell.bottomTextField.addTarget(self, action: #selector(didMarginChanged(sender:)), for: .editingChanged)
+            if let left = currentTarget?.layoutModel?.actualMarginLeft, let value = left.pointValue {
+                cell.leftTextField.text = String(format: "%.1f", value)
+            }
+            if let right = currentTarget?.layoutModel?.actualMarginRight, let value = right.pointValue {
+                cell.rightTextField.text = String(format: "%.1f", value)
+            }
+            if let top = currentTarget?.layoutModel?.actualMarginTop, let value = top.pointValue {
+                cell.topTextField.text = String(format: "%.1f", value)
+            }
+            if let bottom = currentTarget?.layoutModel?.actualMarginBottom, let value = bottom.pointValue {
+                cell.bottomTextField.text = String(format: "%.1f", value)
+            }
+            return cell
+        case .position:
+            let cell = tableView.dequeueReusableCell(withIdentifier: PaddingTableViewCell.ReuseIdentifier) as! PaddingTableViewCell
+            cell.label.text = "POSITION"
+            cell.leftTextField.placeholder = "0"
+            cell.rightTextField.placeholder = "0"
+            cell.topTextField.placeholder = "0"
+            cell.bottomTextField.placeholder = "0"
+            cell.leftTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
+            cell.rightTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
+            cell.topTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
+            cell.bottomTextField.addTarget(self, action: #selector(didPositionChanged(sender:)), for: .editingChanged)
+            if let left = currentTarget?.layoutModel?.left, let value = left.pointValue {
+                cell.leftTextField.text = String(format: "%.1f", value)
+            }
+            if let right = currentTarget?.layoutModel?.right, let value = right.pointValue {
+                cell.rightTextField.text = String(format: "%.1f", value)
+            }
+            if let top = currentTarget?.layoutModel?.top, let value = top.pointValue {
+                cell.topTextField.text = String(format: "%.1f", value)
+            }
+            if let bottom = currentTarget?.layoutModel?.bottom, let value = bottom.pointValue {
                 cell.bottomTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -161,6 +208,10 @@ extension LayoutViewController: UITableViewDelegate {
             return "FLEX WRAP"
         case .padding:
             return nil
+        case .margin:
+            return nil
+        case .position:
+            return nil
         case .max:
             fatalError()
         }
@@ -171,6 +222,10 @@ extension LayoutViewController: UITableViewDelegate {
             fatalError()
         }
         switch section {
+        case .position:
+            return CGFloat.leastNormalMagnitude
+        case .margin:
+            return CGFloat.leastNormalMagnitude
         case .padding:
             return CGFloat.leastNormalMagnitude
         case .addNode:
@@ -197,6 +252,10 @@ extension LayoutViewController: UITableViewDelegate {
             fatalError()
         }
         switch section {
+        case .margin:
+            fallthrough
+        case .position:
+            fallthrough
         case .padding:
             return 110
         default:
@@ -224,6 +283,10 @@ extension LayoutViewController: UITableViewDelegate {
         case .flexWrap:
             didTapFlexWrap()
         case .padding:
+            break
+        case .margin:
+            break
+        case .position:
             break
         case .max:
             fatalError()
@@ -358,8 +421,70 @@ extension LayoutViewController {
         self.present(ac, animated: true, completion: nil)
     }
     
-    private func didPaddingChanged(sender: UITextField, direction: Direction) {
-        
+    @objc func didPaddingChanged(sender: UITextField) {
+        guard let direction = Direction(rawValue: sender.tag) else {
+            fatalError()
+        }
+        guard let text = sender.text else {
+            return
+        }
+        let value: Float = NSString(string: text).floatValue
+        switch direction {
+        case .left:
+            currentTarget?.layoutModel?.paddingLeft = YGValue(value: value, unit: .point)
+        case .right:
+            currentTarget?.layoutModel?.paddingRight = YGValue(value: value, unit: .point)
+        case .top:
+            currentTarget?.layoutModel?.paddingTop = YGValue(value: value, unit: .point)
+        case .bottom:
+            currentTarget?.layoutModel?.paddingBottom = YGValue(value: value, unit: .point)
+        }
+        currentTarget?.applyLayoutModel()
+        delegate?.setNeedsLayoutComponent(sender: self)
+    }
+    
+    @objc func didMarginChanged(sender: UITextField) {
+        guard let direction = Direction(rawValue: sender.tag) else {
+            fatalError()
+        }
+        guard let text = sender.text else {
+            return
+        }
+        let value: Float = NSString(string: text).floatValue
+        switch direction {
+        case .left:
+            currentTarget?.layoutModel?.marginLeft = YGValue(value: value, unit: .point)
+        case .right:
+            currentTarget?.layoutModel?.marginRight = YGValue(value: value, unit: .point)
+        case .top:
+            currentTarget?.layoutModel?.marginTop = YGValue(value: value, unit: .point)
+        case .bottom:
+            currentTarget?.layoutModel?.marginBottom = YGValue(value: value, unit: .point)
+        }
+        currentTarget?.applyLayoutModel()
+        delegate?.setNeedsLayoutComponent(sender: self)
+    }
+    
+    @objc func didPositionChanged(sender: UITextField) {
+        guard let direction = Direction(rawValue: sender.tag) else {
+            fatalError()
+        }
+        guard let text = sender.text else {
+            return
+        }
+        let value: Float = NSString(string: text).floatValue
+        switch direction {
+        case .left:
+            currentTarget?.layoutModel?.left = YGValue(value: value, unit: .point)
+        case .right:
+            currentTarget?.layoutModel?.right = YGValue(value: value, unit: .point)
+        case .top:
+            currentTarget?.layoutModel?.top = YGValue(value: value, unit: .point)
+        case .bottom:
+            currentTarget?.layoutModel?.bottom = YGValue(value: value, unit: .point)
+        }
+        currentTarget?.applyLayoutModel()
+        delegate?.setNeedsLayoutComponent(sender: self)
     }
 }
 

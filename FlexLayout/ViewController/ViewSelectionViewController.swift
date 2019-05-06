@@ -12,6 +12,7 @@ import SnapKit
 class ViewSelectionViewController: UIViewController {
     var candidates: [ViewCandidateModel]?
     var completeBlock: ((Int) -> Void)?
+    var dismissBlock: (() -> Void)?
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -42,6 +43,12 @@ class ViewSelectionViewController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        dismissBlock?()
+    }
 }
 
 extension ViewSelectionViewController: UICollectionViewDataSource {
@@ -64,6 +71,7 @@ extension ViewSelectionViewController: UICollectionViewDataSource {
 
 extension ViewSelectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        dismissBlock = nil
         dismiss(animated: true) {
             self.completeBlock?(indexPath.item)
         }

@@ -32,6 +32,7 @@ class ViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
+        layoutViewController.currentTarget = sectionViewController.componentView
         layoutViewController.delegate = self
         self.addChild(layoutViewController)
         layoutViewController.didMove(toParent: self)

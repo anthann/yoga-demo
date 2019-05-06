@@ -83,7 +83,16 @@ class SectionViewController: UIViewController {
     //MARK: Vars
     
     weak var delegate: SectionViewControllerProtocol?
-    lazy var componentView = ComponentView()
+    lazy var componentView: ComponentView = {
+        var layout = YGLayoutWapperModel()
+        layout.justifyContent = .flexStart
+        layout.width = YGValue(value: 360.0, unit: .point)
+        layout.height = YGValue(value: 300.0, unit: .point)
+        let view = ComponentView()
+        view.delegate = self
+        view.layoutModel = layout
+        return view
+    }()
     
     //MARK: Life Cycle
     
@@ -99,12 +108,6 @@ class SectionViewController: UIViewController {
     }
     
     private func setupViews() {
-        var layout = YGLayoutWapperModel()
-        layout.justifyContent = .flexStart
-        layout.width = YGValue(value: 360.0, unit: .point)
-        layout.height = YGValue(value: 300.0, unit: .point)
-        componentView.layoutModel = layout
-        componentView.delegate = self
         view.addSubview(componentView)
         componentView.applyLayoutModel()
         componentView.yoga.applyLayout(preservingOrigin: true)
@@ -151,6 +154,9 @@ class SectionViewController: UIViewController {
         vc.candidates = models
         vc.completeBlock = { [weak self] index in
             self?.store.dispatch(.onTapComponent(candidates[index]))
+        }
+        vc.dismissBlock = { [weak self] in
+            self?.store.dispatch(.onTapOutside)
         }
         vc.modalPresentationStyle = .popover
         vc.popoverPresentationController?.backgroundColor = .white

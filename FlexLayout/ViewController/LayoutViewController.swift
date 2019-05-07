@@ -143,16 +143,16 @@ extension LayoutViewController: UITableViewDataSource {
             cell.rightTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             cell.topTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
             cell.bottomTextField.addTarget(self, action: #selector(didPaddingChanged), for: .editingChanged)
-            if let left = currentTarget?.layoutModel?.left, case YGValueWrapper.point(let value) = left {
+            if let left = currentTarget?.layoutModel?.paddingLeft, case YGValueWrapper.point(let value) = left {
                 cell.leftTextField.text = String(format: "%.1f", value)
             }
-            if let right = currentTarget?.layoutModel?.right, case YGValueWrapper.point(let value) = right {
+            if let right = currentTarget?.layoutModel?.paddingRight, case YGValueWrapper.point(let value) = right {
                 cell.rightTextField.text = String(format: "%.1f", value)
             }
-            if let top = currentTarget?.layoutModel?.top, case YGValueWrapper.point(let value) = top {
+            if let top = currentTarget?.layoutModel?.paddingTop, case YGValueWrapper.point(let value) = top {
                 cell.topTextField.text = String(format: "%.1f", value)
             }
-            if let bottom = currentTarget?.layoutModel?.bottom, case YGValueWrapper.point(let value) = bottom {
+            if let bottom = currentTarget?.layoutModel?.paddingBottom, case YGValueWrapper.point(let value) = bottom {
                 cell.bottomTextField.text = String(format: "%.1f", value)
             }
             return cell
@@ -225,6 +225,13 @@ extension LayoutViewController: UITableViewDataSource {
             }
             if let height = currentTarget?.layoutModel?.height, case YGValueWrapper.point(let value) = height {
                 cell.heightTextField.text = String(format: "%.1f", value)
+            }
+            if let sp = currentTarget?.superview, sp.isYogaEnabled == false {
+                cell.widthTextField.isEnabled = false
+                cell.heightTextField.isEnabled = false
+            } else {
+                cell.widthTextField.isEnabled = true
+                cell.heightTextField.isEnabled = true
             }
             return cell
         case .maxSize:

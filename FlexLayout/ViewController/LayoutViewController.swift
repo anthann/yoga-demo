@@ -42,7 +42,8 @@ class LayoutViewController: UIViewController {
         tableView.allowsSelection = true
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.tableFooterView = UIView()
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 60))
         tableView.register(AddNodeTableViewCell.self, forCellReuseIdentifier: AddNodeTableViewCell.ReuseIdentifier)
         tableView.register(DropDownTableViewCell.self, forCellReuseIdentifier: DropDownTableViewCell.ReuseIdentifier)
         tableView.register(PaddingTableViewCell.self, forCellReuseIdentifier: PaddingTableViewCell.ReuseIdentifier)
@@ -55,6 +56,8 @@ class LayoutViewController: UIViewController {
     weak var currentTarget: UIView? {
         didSet {
             tableView.reloadData()
+            tableView.tableHeaderView?.backgroundColor = currentTarget?.backgroundColor
+            tableView.tableFooterView?.backgroundColor = currentTarget?.backgroundColor
         }
     }
     
@@ -368,6 +371,8 @@ extension LayoutViewController: UITableViewDelegate {
             fatalError()
         }
         switch section {
+        case .addNode:
+            return 66.0
         case .margin:
             fallthrough
         case .position:

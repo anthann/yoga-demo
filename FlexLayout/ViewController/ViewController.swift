@@ -22,16 +22,6 @@ class ViewController: UIViewController {
     }
     
     private func setupViews() {
-        sectionViewController.delegate = self
-        self.addChild(sectionViewController)
-        sectionViewController.didMove(toParent: self)
-        self.view.addSubview(sectionViewController.view)
-        sectionViewController.view.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview()
-            make.size.equalTo(CGSize(width: 360.0, height: 300.0))
-            make.centerX.equalToSuperview()
-        }
-        
         layoutViewController.currentTarget = sectionViewController.componentView
         layoutViewController.delegate = self
         self.addChild(layoutViewController)
@@ -40,6 +30,30 @@ class ViewController: UIViewController {
         layoutViewController.view.snp.makeConstraints { (make) in
             make.top.bottom.right.equalToSuperview()
             make.width.equalTo(300)
+        }
+        
+        let leftMarginView = UIView()
+        self.view.addSubview(leftMarginView)
+        leftMarginView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+        }
+        
+        sectionViewController.delegate = self
+        self.addChild(sectionViewController)
+        sectionViewController.didMove(toParent: self)
+        self.view.addSubview(sectionViewController.view)
+        sectionViewController.view.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.size.equalTo(CGSize(width: SectionViewController.PreferedWidth, height: SectionViewController.PreferedHeight))
+            make.left.equalTo(leftMarginView.snp.right)
+        }
+        
+        let rightMarginView = UIView()
+        self.view.addSubview(rightMarginView)
+        rightMarginView.snp.makeConstraints { (make) in
+            make.left.equalTo(sectionViewController.view.snp.right)
+            make.right.equalTo(layoutViewController.view.snp.left)
+            make.width.equalTo(leftMarginView.snp.width)
         }
         
         let gr = UITapGestureRecognizer(target: self, action: #selector(onTap))

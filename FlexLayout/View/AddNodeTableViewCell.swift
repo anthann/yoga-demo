@@ -22,6 +22,7 @@ class AddNodeTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         let addButton = UIButton()
+        addButton.layer.cornerRadius = 6
         addButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         addButton.setTitle("Add Child Node", for: .normal)
         addButton.setTitleColor(UIColor.white, for: .normal)
@@ -31,11 +32,12 @@ class AddNodeTableViewCell: UITableViewCell {
         addButton.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(16)
             make.right.equalTo(contentView.snp.centerX).offset(-8)
-            make.top.equalToSuperview().offset(6)
-            make.bottom.equalToSuperview().offset(-6)
+            make.centerY.equalToSuperview()
+            make.height.equalTo(44.0)
         }
         
         let removeButton = UIButton()
+        removeButton.layer.cornerRadius = 6
         removeButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         removeButton.setTitle("Remove Node", for: .normal)
         removeButton.setTitleColor(UIColor.white, for: .normal)

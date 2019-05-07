@@ -14,6 +14,9 @@ protocol SectionViewControllerProtocol: AnyObject {
 }
 
 class SectionViewController: UIViewController {
+    static let PreferedWidth: CGFloat = 500.0
+    static let PreferedHeight: CGFloat = 400.0
+    
     //MARK: Store
     
     var store: Store<Action, State, Command>!
@@ -48,8 +51,14 @@ class SectionViewController: UIViewController {
                 state.candidateViews = nil
                 state.selectedView = view
             } else if state.candidateViews == nil && state.selectedView == nil {
-                state.selectedView = nil
-                state.candidateViews = strongSelf.hitStack(of: view)
+                let stack = strongSelf.hitStack(of: view)
+                if stack.count > 1 {
+                    state.selectedView = nil
+                    state.candidateViews = stack
+                } else {
+                    state.selectedView = stack.first
+                    state.candidateViews = nil
+                }
             }
         case .onTapOutside:
             state.selectedView = nil
@@ -63,11 +72,15 @@ class SectionViewController: UIViewController {
         }
         if previousState == nil || previousState!.selectedView != state.selectedView {
             if let previousView = previousState?.selectedView {
+                previousView.layer.shadowOffset = CGSize(width: 0, height: -3.0)
+                previousView.layer.shadowRadius = 3.0
                 previousView.layer.shadowColor = nil
                 previousView.layer.shadowOpacity = 0.0
             }
             if let selectedView = state.selectedView {
                 let color: UIColor = selectedView.backgroundColor ?? .black
+                selectedView.layer.shadowRadius = 5.0
+                selectedView.layer.shadowOffset = CGSize(width: 0, height: 0)
                 selectedView.layer.shadowColor = color.cgColor
                 selectedView.layer.shadowOpacity = 1.0
                 delegate?.onSelectionChange(sender: self, selected: selectedView)
@@ -86,8 +99,8 @@ class SectionViewController: UIViewController {
     lazy var componentView: ComponentView = {
         var layout = YGLayoutWapperModel()
         layout.justifyContent = .flexStart
-        layout.width = YGValueWrapper.point(360)
-        layout.height = YGValueWrapper.point(300)
+        layout.width = YGValueWrapper.point(Float(SectionViewController.PreferedWidth))
+        layout.height = YGValueWrapper.point(Float(SectionViewController.PreferedHeight))
         let view = ComponentView()
         view.delegate = self
         view.layoutModel = layout
@@ -110,7 +123,7 @@ class SectionViewController: UIViewController {
     private func setupViews() {
         view.addSubview(componentView)
         componentView.applyLayoutModel()
-        componentView.yoga.applyLayout(preservingOrigin: true)
+        componentView.layout()
     }
     
     func addView() {
@@ -126,7 +139,7 @@ class SectionViewController: UIViewController {
             componentView.addSubview(view)
         }
         view.applyLayoutModel()
-        componentView.layout(mode: .adjustHeight)
+        componentView.layout()
     }
     
     func removeView(_ view: UIView) {
@@ -134,7 +147,7 @@ class SectionViewController: UIViewController {
             return
         }
         view.removeFromSuperview()
-        componentView.layout(mode: .adjustHeight)
+        componentView.layout()
     }
     
     private func hitStack(of view: UIView) -> [UIView] {
@@ -168,6 +181,7 @@ class SectionViewController: UIViewController {
             self?.store.dispatch(.onTapOutside)
         }
         vc.modalPresentationStyle = .popover
+        vc.popoverPresentationController?.permittedArrowDirections = .right
         vc.popoverPresentationController?.backgroundColor = .white
         vc.popoverPresentationController?.sourceView = candidates.first
         vc.popoverPresentationController?.sourceRect = candidates.first!.bounds

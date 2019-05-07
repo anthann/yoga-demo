@@ -16,7 +16,10 @@ class ViewSelectionViewController: UIViewController {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 20
+        layout.itemSize = CGSize(width: 240, height: 90)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .white
@@ -27,7 +30,7 @@ class ViewSelectionViewController: UIViewController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
-        self.preferredContentSize = CGSize(width: 300.0, height: 600.0)
+        self.preferredContentSize = CGSize(width: 240.0, height: 400.0)
     }
     
     required init?(coder aDecoder: NSCoder) {

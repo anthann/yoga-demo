@@ -148,6 +148,7 @@ class SectionViewController: UIViewController {
         }
         view.removeFromSuperview()
         componentView.layout()
+        store.dispatch(.onTapOutside)
     }
     
     private func hitStack(of view: UIView) -> [UIView] {

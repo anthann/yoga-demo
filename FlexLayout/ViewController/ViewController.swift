@@ -68,15 +68,21 @@ class ViewController: UIViewController {
 
 extension ViewController: LayoutViewControllerProtocol {
     func onTapAddSubView(sender: LayoutViewController) {
-        sectionViewController.addView()
+        UIView.animate(withDuration: 0.2) {
+            self.sectionViewController.addView()
+        }
     }
     
     func onTapRemoveView(sender: LayoutViewController, view: UIView) {
-        sectionViewController.removeView(view)
+        UIView.animate(withDuration: 0.2) {
+            self.sectionViewController.removeView(view)
+        }
     }
     
     func setNeedsLayoutComponent(sender: LayoutViewController) {
-        sectionViewController.componentView.layout()
+        UIView.animate(withDuration: 0.2) {
+            self.sectionViewController.componentView.layout()
+        }
     }
 }
 

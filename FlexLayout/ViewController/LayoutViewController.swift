@@ -815,6 +815,10 @@ extension LayoutViewController: AddNodeCellProtocol {
 }
 
 extension LayoutViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.selectAll(nil)
+    }
+    
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         KeyboardAvoiding.setAvoidingView(tableView, withTriggerView: textField)
         return true

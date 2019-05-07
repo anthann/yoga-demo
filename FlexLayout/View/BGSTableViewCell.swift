@@ -82,13 +82,13 @@ class BGSTableViewCell: UITableViewCell {
         
         basisTextField.text = nil
         basisTextField.placeholder = "auto"
-        basisTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        basisTextField.removeTarget(nil, action: nil, for: .editingChanged)
         shrinkTextField.text = nil
         shrinkTextField.placeholder = "1"
-        shrinkTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        shrinkTextField.removeTarget(nil, action: nil, for: .editingChanged)
         growTextField.text = nil
         growTextField.placeholder = "0"
-        growTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        growTextField.removeTarget(nil, action: nil, for: .editingChanged)
     }
 
 }

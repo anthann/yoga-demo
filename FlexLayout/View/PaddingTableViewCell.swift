@@ -108,15 +108,15 @@ class PaddingTableViewCell: UITableViewCell {
         label.text = nil
         topTextField.text = nil
         topTextField.placeholder = "0"
-        topTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        topTextField.removeTarget(nil, action: nil, for: .editingChanged)
         bottomTextField.text = nil
         bottomTextField.placeholder = "0"
-        bottomTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        bottomTextField.removeTarget(nil, action: nil, for: .editingChanged)
         leftTextField.text = nil
         leftTextField.placeholder = "0"
-        leftTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        leftTextField.removeTarget(nil, action: nil, for: .editingChanged)
         rightTextField.text = nil
         rightTextField.placeholder = "0"
-        rightTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        rightTextField.removeTarget(nil, action: nil, for: .editingChanged)
     }
 }

@@ -66,10 +66,10 @@ class SizeTableViewCell: UITableViewCell {
         
         widthTextField.text = nil
         widthTextField.placeholder = "0"
-        widthTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        widthTextField.removeTarget(nil, action: nil, for: .editingChanged)
         heightTextField.text = nil
         heightTextField.placeholder = "0"
-        heightTextField.removeTarget(nil, action: nil, for: .touchUpInside)
+        heightTextField.removeTarget(nil, action: nil, for: .editingChanged)
     }
 
 }
